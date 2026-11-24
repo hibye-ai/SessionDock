@@ -34,8 +34,6 @@
   &nbsp;·&nbsp;
   <a href="#변경-사항">변경 사항</a>
   &nbsp;·&nbsp;
-  <a href="#공유-세션과-관리자-도구">SessionDock Admin</a>
-  &nbsp;·&nbsp;
   <a href="#개발과-빌드">개발과 빌드</a>
 </p>
 
@@ -99,9 +97,6 @@
   </tbody>
 </table>
 
-> [!NOTE]
-> **0.1.8 비밀번호 정책** — SessionDock 0.1.8부터 장비 비밀번호는 저장하지 않고 접속할 때마다 입력합니다. 이전 버전에서 저장한 장비 비밀번호는 0.1.8이 세션 저장 파일을 처음 열 때 제거됩니다.
-
 ## 변경 사항
 
 <table>
@@ -109,8 +104,7 @@
     <tr>
       <td width="34%" valign="top"><strong><code>0.1.8</code></strong>&nbsp;&nbsp;<code>최신</code></td>
       <td valign="top">
-        • 공식 웹 업데이트와 공유 세션 게시를 추가했습니다.<br>
-        • 장비 비밀번호는 저장하지 않고 연결할 때마다 입력합니다.
+        • 공식 웹 업데이트와 공유 세션 게시를 추가했습니다.
       </td>
     </tr>
     <tr>
@@ -122,10 +116,6 @@
     </tr>
   </tbody>
 </table>
-
-## 공유 세션과 관리자 도구
-
-팀의 공유 세션 목록을 만들고 배포하려면 별도 관리자 도구인 **[SessionDock Admin](admin/README.md)**을 사용하세요. 엑셀·CSV·TSV 자동 인식, JSON 편집 및 게시 절차는 [admin/README.md](admin/README.md)에 정리되어 있습니다.
 
 ## 개발과 빌드
 
@@ -149,10 +139,6 @@ node scripts/verify-package.cjs
 
 Windows 빌드 결과는 `dist/SessionDock.zip`에 생성됩니다. 단위 시험과 통합 시험은 합성 데이터와 루프백 서버를 사용합니다.
 
-## 기여
-
-버그를 제보할 때는 SessionDock과 Windows 버전, SSH 또는 Telnet 여부, 재현 순서를 함께 알려 주세요. 장비 주소, 로그인 정보, 실제 접속 목록이 들어 있는 로그는 정리한 뒤 첨부해 주세요.
-
 ## 라이선스
 
 SessionDock 소스는 MIT 라이선스로 제공됩니다. 자세한 내용은 [LICENSE](LICENSE)를 참고하세요.
@@ -164,7 +150,6 @@ SessionDock 소스는 MIT 라이선스로 제공됩니다. 자세한 내용은 [
   <sub>
     <a href="https://sessiondock.norahc.com/">공식 사이트</a> ·
     <a href="https://sessiondock.norahc.com/SessionDock.zip">Windows 다운로드</a> ·
-    <a href="admin/README.md">SessionDock Admin</a> ·
     <a href="LICENSE">MIT License</a>
   </sub>
 </div>
