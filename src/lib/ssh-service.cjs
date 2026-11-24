@@ -22,6 +22,15 @@ const { authenticationHandler, isPasswordChallenge, createAuthenticationState,
 
 const MAX_BUFFER = 1024 * 1024;
 const MAX_TRANSFERS = 8;
+const SFTP_OPERATION_TIMEOUT_MS = 30000;
+
+function sftpTimeout() {
+  return new ServiceError('SFTP 응답 시간이 초과되었습니다. 원격 목록을 새로고침하고 현재 상태를 확인해 주세요.', 'SFTP_TIMEOUT');
+}
+
+function unknownTransferCommit() {
+  return new ServiceError('파일 전송 결과를 확인하지 못했습니다. 다시 시도하기 전에 대상 파일을 확인해 주세요.', 'TRANSFER_COMMIT_UNKNOWN');
+}
 const MAX_FORWARD_SOCKETS = 64;
 const RECEIVE_DRAIN_CHUNK = 32 * 1024;
 // Retained transport-close records: a batch row reads its own record in its
@@ -199,6 +208,7 @@ class SshService {
     if (!Number.isInteger(logOpenTimeoutMs) || logOpenTimeoutMs < 10 || logOpenTimeoutMs > 300000) throw new TypeError('Invalid log opening deadline.');
     this.logOpenTimeoutMs = logOpenTimeoutMs;
     this.handshakeTimeoutMs = handshakeTimeoutMs;
+    this.sftpOperationTimeoutMs = SFTP_OPERATION_TIMEOUT_MS;
     this.receiveDrainTimeoutMs = receiveDrainTimeoutMs;
     this.connections = new Map();
     this.receiving = new Map();
@@ -335,17 +345,18 @@ class SshService {
 
   // All pending callbacks/asks settle immediately on disconnect, even if a remote
   // server or an unanswered dialog never completes its own callback.
-  _pending(connection, start, signal) {
+  _pending(connection, start, signal, deadline) {
     this._assertOpen(connection);
     if (signal?.aborted) return Promise.reject(abortedTransfer(signal));
     if (connection.pending.size >= 128) {
       return Promise.reject(new ServiceError('처리 대기 중인 SSH 작업이 너무 많습니다. 잠시 후 다시 시도해 주세요.', 'BUSY'));
     }
     return new Promise((resolve, reject) => {
-      let settled = false;
+      let settled = false, timer;
       const done = (error, value) => {
         if (settled) return false;
         settled = true;
+        clearTimeout(timer);
         connection.pending.delete(cancel);
         signal?.removeEventListener('abort', abort);
         if (error) reject(error); else resolve(value);
@@ -355,6 +366,7 @@ class SshService {
       const abort = () => done(abortedTransfer(signal));
       connection.pending.add(cancel);
       signal?.addEventListener('abort', abort, { once: true });
+      if (deadline) timer = setTimeout(() => done(deadline.error()), deadline.ms);
       try { start(done); } catch (error) { done(error); }
     });
   }
@@ -1353,26 +1365,31 @@ class SshService {
     if (!connection.sftpPromise) {
       connection.sftpPromise = this._pending(connection, done => {
         connection.client.sftp((error, sftp) => {
-          if (connection.closed) { if (sftp) destroy(sftp); return; }
           if (error) { done(error); return; }
-        connection.resources.add(sftp);
-        let retired = false;
-        const retire = () => {
-          if (retired) return; retired = true;
-          connection.resources.delete(sftp);
-          if (connection.sftp === sftp) connection.sftp = null;
-          for (const job of connection.jobs.values()) if (job.sftp === sftp) {
-            job.controller.abort(new ServiceError('SFTP 채널이 닫혔습니다.', 'SFTP_CLOSED'));
+          if (!done(null, sftp)) {
+            // A late success belongs to an expired open, not a replacement
+            // channel that may already be in use.
+            sftp.on('error', () => {});
+            destroy(sftp);
+            return;
           }
-          if (!connection.closed) this._emit({ type: 'sftp-closed', id: connection.id });
-        };
-        sftp.once('close', retire);
-        sftp.once('end', retire);
-        sftp.on('error', () => { retire(); destroy(sftp); });
+          connection.resources.add(sftp);
+          let retired = false;
+          const retire = () => {
+            if (retired) return; retired = true;
+            connection.resources.delete(sftp);
+            if (connection.sftp === sftp) connection.sftp = null;
+            for (const job of connection.jobs.values()) if (job.sftp === sftp) {
+              job.controller.abort(new ServiceError('SFTP 채널이 닫혔습니다.', 'SFTP_CLOSED'));
+            }
+            if (!connection.closed) this._emit({ type: 'sftp-closed', id: connection.id });
+          };
+          sftp.once('close', retire);
+          sftp.once('end', retire);
+          sftp.on('error', () => { retire(); destroy(sftp); });
           connection.sftp = sftp;
-          if (!done(null, sftp)) destroy(sftp);
         });
-      });
+      }, undefined, { ms: this.sftpOperationTimeoutMs, error: sftpTimeout });
     }
     const pending = connection.sftpPromise;
     try { return await pending; }
@@ -1523,15 +1540,18 @@ class SshService {
     return { transferId, cancelled: true, status: 'cancelled' };
   }
 
-  upload(id, localPath, targetPath) { return this._transfer(id, 'upload', localPath, targetPath); }
+  upload(id, localPath, targetPath, { overwrite = false } = {}) {
+    return this._transfer(id, 'upload', localPath, targetPath, overwrite === true);
+  }
   download(id, sourcePath, localPath) { return this._transfer(id, 'download', localPath, sourcePath); }
 
   _sftpRequest(connection, sftp, start, signal) {
     return this._pending(connection, done => {
-      let complete = false;
+      let complete = false, timer;
       const finish = (error, value) => {
         if (complete) return false; complete = true;
-        sftp.removeListener('close', closed); sftp.removeListener('error', closed);
+        clearTimeout(timer);
+        sftp.removeListener('close', closed); sftp.removeListener('end', closed); sftp.removeListener('error', closed);
         signal?.removeEventListener('abort', abort);
         connection.pending.delete(cancel);
         // ssh2 flushes callbacks before emitting end/close, using this fixed
@@ -1547,13 +1567,19 @@ class SshService {
       if (signal?.aborted) { abort(); return; }
       if (connection.sftp !== sftp || sftp.destroyed) { closed(); return; }
       connection.pending.add(cancel);
-      sftp.once('close', closed); sftp.once('error', closed);
+      sftp.once('close', closed); sftp.once('end', closed); sftp.once('error', closed);
       signal?.addEventListener('abort', abort, { once: true });
-      try { start(finish); } catch (error) { finish(error); }
+      const activity = () => {
+        if (complete) return;
+        if (timer) timer.refresh();
+        else timer = setTimeout(() => finish(sftpTimeout()), this.sftpOperationTimeoutMs);
+      };
+      activity();
+      try { start(finish, () => !complete, activity); } catch (error) { finish(error); }
     });
   }
 
-  async _transfer(id, direction, localPath, value) {
+  async _transfer(id, direction, localPath, value, overwrite = false) {
     const connection = this._connection(id);
     const remote = remotePath(value);
     if (typeof localPath !== 'string' || !path.isAbsolute(localPath) || localPath.includes('\0')) {
@@ -1567,7 +1593,7 @@ class SshService {
       throw new ServiceError('다른 작업이 이 전송 대상을 사용 중입니다.', 'REMOTE_BUSY');
     }
     const transferId = randomUUID();
-    const job = { transferId, direction, localPath, remotePath: remote, transferred: 0,
+    const job = { transferId, direction, localPath, overwrite, remotePath: remote, transferred: 0,
       total: 0, controller: new AbortController(), lastProgress: 0, phase: 'preparing', terminal: false };
     connection.jobs.set(transferId, job);
     const event = (status, fields = {}) => {
@@ -1580,20 +1606,28 @@ class SshService {
     job.cancel = (reason = new ServiceError('연결이 끊어졌습니다.', 'NOT_CONNECTED')) => {
       if (job.controller.signal.aborted) return;
       job.controller.abort(reason);
-      event('cancelled', { message: reason.message, code: reason.code });
+      if (job.phase === 'committing') {
+        job.commitInterrupted = true;
+        const unknown = unknownTransferCommit();
+        event('error', { message: unknown.message, code: unknown.code });
+      } else if (job.phase === 'completed') event('completed');
+      else event('cancelled', { message: reason.message, code: reason.code });
     };
     event('started');
     return this._cleanup(this._runTransfer(connection, job, event));
   }
 
-  async _renameUpload(connection, sftp, staged, target) {
+  async _renameUpload(connection, sftp, staged, target, overwrite) {
     try {
-      await this._sftpRequest(connection, sftp, done => {
+      await this._sftpRequest(connection, sftp, (done, active) => {
         const fallback = () => {
+          if (!active()) return;
           this._assertOpen(connection, true);
+          // SFTP v3 RENAME must refuse an existing destination. Only use the
+          // overwrite-capable POSIX extension after an explicit approval.
           sftp.rename(staged, target, done);
         };
-        if (typeof sftp.ext_openssh_rename !== 'function') { fallback(); return; }
+        if (!overwrite || typeof sftp.ext_openssh_rename !== 'function') { fallback(); return; }
         try {
           sftp.ext_openssh_rename(staged, target, error => {
             // SSH_FX_OP_UNSUPPORTED: some servers advertise but reject it.
@@ -1609,7 +1643,9 @@ class SshService {
         }
       });
     } catch (error) {
-      if (connection.closed) throw error;
+      if (connection.closed || ['SFTP_CLOSED', 'SFTP_TIMEOUT', 'NOT_CONNECTED'].includes(error?.code)) {
+        throw unknownTransferCommit();
+      }
       throw new ServiceError('업로드를 안전하게 마무리하지 못했습니다. 서버가 기존 파일 덮어쓰기를 거부했을 수 있으니 새 파일 이름을 사용하거나 원격 권한을 확인해 주세요. 원래 대상 파일은 삭제하지 않았습니다.', 'UPLOAD_COMMIT_FAILED');
     }
   }
@@ -1694,6 +1730,7 @@ class SshService {
       if (signal.aborted) throw abortedTransfer(signal);
     };
     let sftp, copying, remoteStream, remoteHandle, staging = false, committed = false;
+    let commitUnknown = false;
     try {
       // Cancelling one waiter must not cancel shared SFTP initialization.
       sftp = await this._await(connection, () => this._sftp(connection), signal);
@@ -1710,7 +1747,7 @@ class SshService {
       if (direction === 'upload') staging = true;
       check();
       job.phase = 'copying';
-      await this._sftpRequest(connection, sftp, done => {
+      await this._sftpRequest(connection, sftp, (done, _active, activity) => {
         let source, destination;
         try {
           source = direction === 'upload' ? fs.createReadStream(localPath)
@@ -1728,6 +1765,7 @@ class SshService {
           // Install pipeline handlers synchronously with stream creation, even
           // when cancellation or the pending-operation limit is reached.
           const progress = new Transform({ transform(chunk, encoding, callback) {
+            activity();
             job.transferred += chunk.length;
             if (Date.now() - job.lastProgress >= 100) {
               job.lastProgress = Date.now();
@@ -1750,25 +1788,27 @@ class SshService {
       // After the final rename has been issued it cannot be recalled safely.
       // Reject late cancellation instead of reporting a cancelled replacement.
       job.phase = 'committing';
-      if (direction === 'upload') await this._renameUpload(connection, sftp, staged, remote);
+      if (direction === 'upload') await this._renameUpload(connection, sftp, staged, remote, job.overwrite);
       else await fs.promises.rename(staged, localPath);
       committed = true;
+      if (job.commitInterrupted) throw unknownTransferCommit();
       job.phase = 'completed';
-      this._assertOpen(connection, true);
       event('completed');
       return { transferId, direction, localPath, remotePath: remote, transferred: job.transferred, total: job.total };
     } catch (error) {
-      const safe = publicError(signal.aborted && !connection.closed ? abortedTransfer(signal) : error, `${direction === 'upload' ? '파일을 업로드하지' : '파일을 다운로드하지'} 못했습니다`);
+      const safe = publicError(signal.aborted && !connection.closed && error?.code !== 'TRANSFER_COMMIT_UNKNOWN' ? abortedTransfer(signal) : error, `${direction === 'upload' ? '파일을 업로드하지' : '파일을 다운로드하지'} 못했습니다`);
+      commitUnknown = safe.code === 'TRANSFER_COMMIT_UNKNOWN';
       if (!connection.closed) event(safe.code === 'TRANSFER_CANCELLED' ? 'cancelled' : 'error', { message: safe.message, code: safe.code });
       throw safe;
     } finally {
       // _pending rejects immediately on disconnect. Streams can still be closing
       // then, especially on Windows; wait before unlinking the staged download.
+      if (copying && !committed && !signal.aborted) job.controller.abort();
       if (copying) await Promise.allSettled([copying]);
       if (remoteStream) await Promise.allSettled([remoteStream.transferClosed]);
       if (remoteHandle) await this._closeTransferHandle(connection, sftp, remoteHandle);
       try {
-        if (staging && !committed) {
+        if (staging && !committed && !commitUnknown) {
           if (direction === 'download') {
             try { await fs.promises.unlink(staged); }
             catch (error) { if (error.code !== 'ENOENT') throw publicError(error, '임시 다운로드 파일을 삭제하지 못했습니다'); }

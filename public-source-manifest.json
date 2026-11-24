@@ -286,7 +286,7 @@
     },
     {
       "path": "src/lib/connection-service.cjs",
-      "sha256": "e1c65d80d9bc81965e1c947e85e50ef18d9833c148cdff5cefe351abcbd8a9f1"
+      "sha256": "5d2ea010e350e3504446b9ed5c433b8ecebd937edf640530e431280288a5cc4d"
     },
     {
       "path": "src/lib/disconnect-cause.cjs",
@@ -409,7 +409,7 @@
     },
     {
       "path": "src/lib/ssh-service.cjs",
-      "sha256": "91f27b3f2403c34df9ce9bb2c064774f89fbaea3f4a225c9b0b424af02dc7983"
+      "sha256": "8675831f755a8f53d8e39724d2f2ca44e6bf2e68dcb6b2294e58b50a929afd2b"
     },
     {
       "path": "src/lib/system-fonts.cjs",
@@ -477,7 +477,7 @@
     },
     {
       "path": "src/main.cjs",
-      "sha256": "fc1f2a5424c935da3f6f6d11b16d1f0f389fffdbe12e199e5c23f4502530e6ac"
+      "sha256": "4b982b7b7d387c57b5a13b70753af3a5b9fa9580e9e926320a7265ebe6ca8bf4"
     },
     {
       "path": "src/preload.cjs",
@@ -493,7 +493,7 @@
     },
     {
       "path": "src/renderer/app.js",
-      "sha256": "9f2f8c9860c2a373eb50abd02f896c5b5992cf97c1fbeb7b178993acca8cdf6e"
+      "sha256": "a3e28e69434f304a0b577b84004d53244c3628a1e0c3b9429eccdcca95646b8c"
     },
     {
       "path": "src/renderer/batch-ui.js",
@@ -502,6 +502,10 @@
     {
       "path": "src/renderer/batch.css",
       "sha256": "d5198eacfccf76c5d7eda6f101b83df06047be752f11670e0124273883100448"
+    },
+    {
+      "path": "src/renderer/command-dispatch.cjs",
+      "sha256": "23990ed54ad4b1276b8ea22235702cbc666e88b850a8bae669153b04f6af8031"
     },
     {
       "path": "src/renderer/command-privacy.cjs",
@@ -635,6 +639,10 @@
       "sha256": "c9ef8095bbe4fdce418d22a6f60ec2a7873778260b45f422c3e198cf05bba04e"
     },
     {
+      "path": "tests/command-dispatch.test.cjs",
+      "sha256": "37d523fa161262e134eea1a394f558252f1e16a62192c6eb2539983a6055029e"
+    },
+    {
       "path": "tests/dependency-security.test.cjs",
       "sha256": "21a757efd8dbc68e083bcb9c40aff205a52ec2a7238fddceb0ed1c77cf61a420"
     },
@@ -668,6 +676,10 @@
     {
       "path": "tests/sessiondock-017-update-notes.test.cjs",
       "sha256": "5cc257b6c6d2a31640f6e9586a96846c2ac1169b6ac553a0ef8ff93c97166660"
+    },
+    {
+      "path": "tests/sftp-transfer-policy.test.cjs",
+      "sha256": "36c28a6b83212d23ecf4be18bf3767f0fd4c8856adc0763c49f3c62e28a6fb7f"
     },
     {
       "path": "tests/telnet-service.test.cjs",

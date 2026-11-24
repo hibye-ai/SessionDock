@@ -4,6 +4,7 @@ import { installTerminalCompatibility } from './terminal-compatibility.cjs';
 import { installOperationsUI } from './operations-ui.js';
 import { createLayoutPersistence } from './layout-persistence.cjs';
 import { createAuthenticationPromptTracker, isSensitiveConnection } from './command-privacy.cjs';
+import { dispatchTerminalCommand, formatDispatchResults } from './command-dispatch.cjs';
 import { installAdvancedTerminalUI } from './advanced-terminal-ui.js';
 import { installTerminalDockUI } from './terminal-dock-ui.js';
 import { installBatchUI } from './batch-ui.js';
@@ -1612,12 +1613,14 @@ async function sendCommand(command,forceAll=false,targetOverride=null,title='명
   if((sensitive||targets.some(isSensitiveConnection))&&scope!=='active')throw new Error('민감 입력이나 인증을 기다리는 세션에는 일괄 전송할 수 없습니다. 해당 탭을 선택해 현재 세션으로 전송하세요.');
   if(sensitive&&/[\r\n]/.test(command))throw new Error('민감 입력은 줄바꿈 없이 한 번에 한 줄씩 전송하세요.');
   // Capture IDs before confirmation; a reconnect must not redirect an approved command.
-  const approved = targets.map(c => ({ record:c, id:c.id })); state.commandSending=true;updateStatus();
+  const tabIds = new Map([...state.connections.keys()].map((id, index) => [id, index + 1]));
+  const approved = targets.map(c => ({ record:c, id:c.id, label:`${tabIds.get(c.id)}번 탭 · ${c.name} (${c.host}:${c.port})` }));
+  state.commandSending=true;updateStatus();
   try {
     if(sensitive)clearCommandInput();
     if(forceConfirm||targets.length>1||scope!=='active'||/[\r\n]/.test(command)){
       if(!sensitive)commandConfirmationTargets=approved;
-      const accepted=await message(title,`대상: ${targets.map(c=>c.name).join(', ')}\n${sensitive?'민감 입력을 전송합니다. 내용은 표시하거나 이력에 남기지 않습니다.':'아래 명령어를 전송하고 실행합니다.'}`,{confirm:true,...(sensitive?{}:{command})});
+      const accepted=await message(title,`대상: ${approved.map(target=>target.label).join('\n')}\n\n${sensitive?'민감 입력을 전송합니다. 내용은 표시하거나 이력에 남기지 않습니다.':'아래 명령어를 전송합니다.'}`,{confirm:true,...(sensitive?{}:{command})});
       commandConfirmationTargets=null;if(!accepted)return;
     }
     if(approved.some(({record,id})=>state.connections.get(id)!==record||record.status!=='connected'))throw new Error('확인 중 연결 대상이 변경되었습니다. 다시 확인해서 전송해 주세요.');
@@ -1626,10 +1629,24 @@ async function sendCommand(command,forceAll=false,targetOverride=null,title='명
     // Keep a detected prompt protected through failure or a server that has
     // not replied yet. Fresh output releases it when a normal prompt returns.
     if(!sensitive)for(const {record} of approved)record.authenticationPrompt.reset();
-    const results=await Promise.allSettled(approved.map(({id})=>api.input(id,payload)));
-    if(results.some(result=>result.status==='rejected'))throw new Error('일부 세션에 명령어를 전송하지 못했습니다. 대상별 연결 상태를 확인해 주세요.');
-    if(!sensitive)for(const {record} of approved){record.commandHistory??=[];record.commandHistory=record.commandHistory.filter(item=>item!==command);record.commandHistory.unshift(command);record.commandHistory.length=Math.min(record.commandHistory.length,100);}
-    clearCommandInput();if(!state.emptyWorkspace)state.connections.get(state.active)?.terminal.focus();
+    // Consume the draft before writes begin. Even an IPC error could arrive
+    // after input was queued, so never leave a submitted broadcast ready to resend.
+    if(!sensitive)clearCommandInput();
+    const results=await dispatchTerminalCommand(approved,payload,(id,data)=>api.input(id,data));
+    const unknown=results.some(result=>result.status==='unknown');
+    if(!sensitive)for(const {target:{record,id},status} of results){
+      if(status!=='accepted'||state.connections.get(id)!==record||record.id!==id)continue;
+      record.commandHistory??=[];record.commandHistory=record.commandHistory.filter(item=>item!==command);record.commandHistory.unshift(command);record.commandHistory.length=Math.min(record.commandHistory.length,100);
+    }
+    if(unknown){
+      $('command-target').value='active';
+      updateCommandTargetLabel();
+      if(sensitive)throw new Error('민감 입력의 전달 여부를 확인하지 못했습니다. 장비 화면을 확인한 뒤 다시 입력하세요.');
+      await message('명령어 전송 결과',`${formatDispatchResults(results)}\n\n접수는 장비에서의 실행 성공을 의미하지 않습니다. 다시 보내기 전에 장비 화면을 확인하고 대상을 다시 선택하세요.`);
+    }else if(!sensitive&&scope!=='active'){
+      toast(`${results.length}개 탭 입력 전달 요청 접수 · 실행 여부는 장비 화면에서 확인하세요.`);
+    }
+    if(!state.emptyWorkspace)state.connections.get(state.active)?.terminal.focus();
   } finally { commandConfirmationTargets=null;state.commandSending=false;updateStatus(); }
 }
 let commandSuggestions=[],commandSuggestionIndex=-1,commandHistoryIndex=-1,commandDraft='';

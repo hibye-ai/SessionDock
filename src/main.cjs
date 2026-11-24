@@ -618,15 +618,21 @@ function installHandlers() {
     const chosen = await dialog.showOpenDialog(window, { title: '업로드할 파일 선택', properties: ['openFile', 'multiSelections'] });
     if (chosen.canceled) return null;
     const existing = await ssh.listDirectory(id, remoteDirectory);
+    const existingNames = new Set(existing.entries.map(entry => entry.name));
     let count = 0;
     for (const localPath of chosen.filePaths) {
       const name = path.basename(localPath);
-      if (existing.entries.some(entry => entry.name === name)) {
+      let overwrite = false;
+      if (existingNames.has(name)) {
         const answer = await dialog.showMessageBox(window, { type: 'question', title: '파일 덮어쓰기', message: `${name} 파일이 이미 있습니다. 덮어쓰시겠습니까?`, buttons: ['취소', '덮어쓰기'], defaultId: 0, cancelId: 0 });
         if (answer.response !== 1) continue;
+        overwrite = true;
       }
-      try { await ssh.upload(id, localPath, path.posix.join(existing.path, name)); count++; }
-      catch (error) { if (error.code === 'TRANSFER_CANCELLED') return { count, cancelled: true }; throw error; }
+      try {
+        await ssh.upload(id, localPath, path.posix.join(existing.path, name), { overwrite });
+        existingNames.add(name);
+        count++;
+      } catch (error) { if (error.code === 'TRANSFER_CANCELLED') return { count, cancelled: true }; throw error; }
     }
     return { count };
   });
