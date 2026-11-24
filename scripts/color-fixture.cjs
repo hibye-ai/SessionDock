@@ -6,7 +6,7 @@ function colorFixture(command, send) {
   if(command==='color-neutral'){send('\r\n\x1b[30mERROR NEUTRAL_BLACK\x1b[0m\r\n\x1b[37mERROR NEUTRAL_WHITE\x1b[0m\r\n\x1b[90mWARNING NEUTRAL_GRAY\x1b[0m\r\n\x1b[97mSUCCESS NEUTRAL_BRIGHT_WHITE\x1b[0m\r\nNEUTRAL_DONE\r\n');return true;}
   if (command === 'display-bell') { send('\x07\r\nBELL_DONE\r\n'); return true; }
   if (command === 'color-sample') {
-    send('\r\nuser@server:~/logs$ tail -f /var/log/app.log\r\n한글 경로 /home/사용자/logs · IP 192.168.31.109 · port 22\r\nSUCCESS connected · WARNING timeout · ERROR denied\r\ntrue false 4096 12.5% 2001:db8::1\r\n\x1b[32mERROR SERVER_GREEN\x1b[0m\r\n\x1b[38;2;18;52;86mERROR SERVER_RGB\x1b[0m\r\n\x1b[44mERROR SERVER_BG\x1b[0m\r\n\x1b[3mERROR SERVER_ITALIC\x1b[0m\r\n\x1b[7mERROR SERVER_INVERSE\x1b[0m\r\nCOLOR_SAMPLE_DONE\r\n');return true;
+    send('\r\nuser@server:~/logs$ tail -f /var/log/app.log\r\n한글 경로 /home/사용자/logs · IP 192.0.2.109 · port 22\r\nSUCCESS connected · WARNING timeout · ERROR denied\r\ntrue false 4096 12.5% 2001:db8::1\r\n\x1b[32mERROR SERVER_GREEN\x1b[0m\r\n\x1b[38;2;18;52;86mERROR SERVER_RGB\x1b[0m\r\n\x1b[44mERROR SERVER_BG\x1b[0m\r\n\x1b[3mERROR SERVER_ITALIC\x1b[0m\r\n\x1b[7mERROR SERVER_INVERSE\x1b[0m\r\nCOLOR_SAMPLE_DONE\r\n');return true;
   }
   if (command === 'color-fragment') {
     // Deliberately split a Korean UTF-8 codepoint and a keyword across transport writes.

@@ -128,11 +128,11 @@
     },
     {
       "path": "scripts/color-fixture.cjs",
-      "sha256": "c051c4ec52b84be260a4b8cb3a933c0814e713d98689591a0b160ef40eac1e4a",
+      "sha256": "7d2240697bb4573dde0923e8b83afb41badaf5a761589c8b490c5dc9e90ed3a7",
       "reviewedFindings": [
         {
           "category": "privateIPv4",
-          "count": 2,
+          "count": 1,
           "reason": "Static example addresses in synthesized terminal output."
         }
       ]
