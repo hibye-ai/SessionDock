@@ -21,7 +21,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "a5eeb345e0aeaa02c86fd834c440fe32f29345dd0bdbc263b9d92f14e9d64e5d"
+      "sha256": "072b16e8492cd4e35af174af70753d2296749b66c5e427147027ea8a603086ec"
     },
     {
       "path": "admin/.gitignore",
@@ -162,6 +162,18 @@
     {
       "path": "build-inputs/python-runtime-manifest.json",
       "sha256": "981e5be7a7673b4d92d6458444765f8d97b4d1d08685ef723f496758ebcb8261"
+    },
+    {
+      "path": "docs/cta-download-dark.svg",
+      "sha256": "19dfedc886218969f83c847332bdbc46e1dab8e26c1cc237928c3bea8e129289"
+    },
+    {
+      "path": "docs/cta-download-light.svg",
+      "sha256": "7ed5b1711ff027aba0d00d542d0ae7961808c859c38c6b96f2d937ca6b2b94f5"
+    },
+    {
+      "path": "docs/readme-hero.png",
+      "sha256": "6d104c0c3df51c02d63fd682716e27d759c2601d82b469ed79176d64a42a5fe7"
     },
     {
       "path": "package-lock.json",
