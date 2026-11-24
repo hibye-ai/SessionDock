@@ -153,6 +153,7 @@ class ConnectionService {
     return closed;
   }
   input(id,data){return this.owner(id).input(id,data);}
+  commandInput(id,data,beforeWrite){return this.owner(id).commandInput(id,data,beforeWrite);}
   resize(id,cols,rows){
     const known=this.routes.get(id)||this.closedRoutes.get(id);
     // A unique connection id identifies one attempt. Its renderer can issue a
@@ -182,7 +183,7 @@ class ConnectionService {
   removeRemote(id,path,expectedType){return this.sshOnly(id).removeRemote(id,path,expectedType);}
   remoteProperties(id,path){return this.sshOnly(id).remoteProperties(id,path);}
   cancelTransfer(id,transferId){return this.sshOnly(id).cancelTransfer(id,transferId);}
-  upload(id,local,remote,options){return this.sshOnly(id).upload(id,local,remote,options);}
+  upload(id,local,remote){return this.sshOnly(id).upload(id,local,remote);}
   download(id,remote,local){return this.sshOnly(id).download(id,remote,local);}
   listConnections(){return [...this.ssh.listConnections(),...this.telnet.listConnections()];}
   async close(){await Promise.all([this.ssh.close(),this.telnet.close()]);this.temporarySessions.clear();}

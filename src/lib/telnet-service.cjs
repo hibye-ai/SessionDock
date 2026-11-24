@@ -133,7 +133,21 @@ class TelnetService extends SshService {
     const tail=connection.terminalEncoding?.end();
     if(tail?.length){this._writeTerminalLog(connection,Buffer.alloc(0),tail);this._emit({type:'data',id:connection.id,data:this.binaryOutput?tail:tail.toString('base64')});}
   }
-  input(id,text){const c=this._connection(id);if(typeof text!=='string'||Buffer.byteLength(text)>1024*1024)throw new Error('Telnet 입력이 올바르지 않습니다.');const bytes=c.codec.encode(text);if(c.shell.writableLength+bytes.length>1024*1024)throw new Error('Telnet 입력 버퍼가 가득 찼습니다. 잠시 후 다시 입력해 주세요.');c.shell.write(bytes);if(c.localEcho){const echo=Buffer.from(text.replace(/\r(?!\n)/g,'\r\n'),'utf8');this._emit({type:'data',id,data:this.binaryOutput?echo:echo.toString('base64')});}}
+  _prepareTerminalInput(id,text){
+    const c=this._connection(id);
+    if(typeof text!=='string'||Buffer.byteLength(text)>1024*1024)throw new Error('Telnet 입력이 올바르지 않습니다.');
+    const bytes=c.codec.encode(text);
+    if(c.shell.writableLength+bytes.length>1024*1024){
+      const error=new Error('Telnet 입력 버퍼가 가득 찼습니다. 잠시 후 다시 입력해 주세요.');
+      error.commandRetryable=bytes.length<=1024*1024;
+      throw error;
+    }
+    return { connection:c, bytes, text };
+  }
+  _writeTerminalInput({connection:c,bytes,text}){
+    c.shell.write(bytes);
+    if(c.localEcho){const echo=Buffer.from(text.replace(/\r(?!\n)/g,'\r\n'),'utf8');this._emit({type:'data',id,data:this.binaryOutput?echo:echo.toString('base64')});}
+  }
   resize(id,cols,rows){const c=this._connection(id,false);if(![cols,rows].every(n=>Number.isInteger(n)&&n>=1&&n<=4096))throw new Error('터미널 크기가 올바르지 않습니다.');c.cols=cols;c.rows=rows;c.codec?.resize(cols,rows);}
 }
 

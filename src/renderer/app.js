@@ -260,13 +260,13 @@ function placeToasts() {
 }
 function listen(id, fn) { $(id).addEventListener('click', event => { event.preventDefault(); Promise.resolve(fn(event)).catch(showError); }); }
 let messageResolve;
-function message(title, text, { confirm = false, command, action, danger = false } = {}) {
+function message(title, text, { confirm = false, command, action, danger = false, focusCancel = false } = {}) {
   if (messageResolve) { messageResolve(false); $('message-dialog').close(); }
   $('message-title').textContent = title; $('message-body').replaceChildren(el('div', 'message-details', text));
   if (command) $('message-body').append(el('pre', 'message-command', command));
   // Paste confirmations default to Run; other confirmations keep the safe Cancel default.
   $('message-cancel').classList.toggle('hidden', !confirm); $('message-ok').textContent = action || (confirm && command ? '실행' : '확인'); $('message-ok').classList.toggle('danger', confirm && danger);
-  $('message-dialog').showModal(); (confirm && (!command || danger) ? $('message-cancel') : $('message-ok')).focus(); return new Promise(resolve => { messageResolve = resolve; });
+  $('message-dialog').showModal(); (confirm && (!command || danger || focusCancel) ? $('message-cancel') : $('message-ok')).focus(); return new Promise(resolve => { messageResolve = resolve; });
 }
 $('message-dialog').addEventListener('keydown',event=>{
   if(!$('message-dialog').open||$('message-cancel').classList.contains('hidden')||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key))return;
@@ -1632,17 +1632,40 @@ async function sendCommand(command,forceAll=false,targetOverride=null,title='명
     // Consume the draft before writes begin. Even an IPC error could arrive
     // after input was queued, so never leave a submitted broadcast ready to resend.
     if(!sensitive)clearCommandInput();
-    const results=await dispatchTerminalCommand(approved,payload,(id,data)=>api.input(id,data));
-    const unknown=results.some(result=>result.status==='unknown');
-    if(!sensitive)for(const {target:{record,id},status} of results){
-      if(status!=='accepted'||state.connections.get(id)!==record||record.id!==id)continue;
-      record.commandHistory??=[];record.commandHistory=record.commandHistory.filter(item=>item!==command);record.commandHistory.unshift(command);record.commandHistory.length=Math.min(record.commandHistory.length,100);
-    }
-    if(unknown){
+    const stillConnected=({record,id})=>state.connections.get(id)===record&&record.id===id
+      &&record.status==='connected'&&!record.closing&&!record.manualDisconnect&&!record.reconnecting&&!record.reconnectOperation;
+    const stillSafe=target=>stillConnected(target)&&!isSensitiveConnection(target.record);
+    const dispatch=async targets=>{
+      const results=await dispatchTerminalCommand(targets,payload,(id,data)=>api.commandInput(id,data));
+      if(!sensitive)for(const {target,status} of results){
+        if(status!=='accepted'||!stillConnected(target))continue;
+        const {record}=target;
+        record.commandHistory??=[];record.commandHistory=record.commandHistory.filter(item=>item!==command);record.commandHistory.unshift(command);record.commandHistory.length=Math.min(record.commandHistory.length,100);
+      }
+      return results;
+    };
+    const results=await dispatch(approved);
+    if(results.some(result=>result.status!=='accepted')){
       $('command-target').value='active';
       updateCommandTargetLabel();
-      if(sensitive)throw new Error('민감 입력의 전달 여부를 확인하지 못했습니다. 장비 화면을 확인한 뒤 다시 입력하세요.');
-      await message('명령어 전송 결과',`${formatDispatchResults(results)}\n\n접수는 장비에서의 실행 성공을 의미하지 않습니다. 다시 보내기 전에 장비 화면을 확인하고 대상을 다시 선택하세요.`);
+      if(sensitive)throw new Error(results[0].status==='not-sent'
+        ?'민감 입력을 전송하지 않았습니다. 장비 화면을 확인한 뒤 다시 입력하세요.'
+        :'민감 입력의 전달 여부를 확인하지 못했습니다. 장비 화면을 확인한 뒤 다시 입력하세요.');
+      const notice='접수는 장비에서의 실행 성공을 의미하지 않습니다. 전달 여부가 미확인인 탭에는 재전송하지 않습니다.';
+      const summary=`${formatDispatchResults(results)}\n\n${notice}`;
+      const retryTargets=results.filter(result=>result.status==='not-sent'&&result.retryable&&stillSafe(result.target)).map(result=>result.target);
+      if(retryTargets.length&&!syncCommandPrivacy()){
+        commandConfirmationTargets=retryTargets;
+        const accepted=await message('명령어 전송 결과',`${summary}\n\n재전송 대상 ${retryTargets.length}개:\n${retryTargets.map(target=>target.label).join('\n')}`,
+          {confirm:true,action:'미전송 탭에 재전송',command,focusCancel:true});
+        commandConfirmationTargets=null;
+        if(accepted){
+          if(state.emptyWorkspace||syncCommandPrivacy()||!retryTargets.every(stillSafe))throw new Error('확인 중 연결 또는 인증 상태가 바뀌어 재전송하지 않았습니다.');
+          for(const {record} of retryTargets)record.authenticationPrompt.reset();
+          const retried=await dispatch(retryTargets);
+          await message('명령어 재전송 결과',`${formatDispatchResults(retried)}\n\n${notice}`);
+        }
+      }else await message('명령어 전송 결과',summary);
     }else if(!sensitive&&scope!=='active'){
       toast(`${results.length}개 탭 입력 전달 요청 접수 · 실행 여부는 장비 화면에서 확인하세요.`);
     }

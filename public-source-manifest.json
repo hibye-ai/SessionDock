@@ -286,7 +286,7 @@
     },
     {
       "path": "src/lib/connection-service.cjs",
-      "sha256": "5d2ea010e350e3504446b9ed5c433b8ecebd937edf640530e431280288a5cc4d"
+      "sha256": "d0a4c045bb88f33a10dbdddd1afea9df3ee185d86b4f2d000adbda69236b0bde"
     },
     {
       "path": "src/lib/disconnect-cause.cjs",
@@ -409,7 +409,7 @@
     },
     {
       "path": "src/lib/ssh-service.cjs",
-      "sha256": "8675831f755a8f53d8e39724d2f2ca44e6bf2e68dcb6b2294e58b50a929afd2b"
+      "sha256": "7ad533e9e71141dbe6a9dc4f57180386a0c5f06b4aeefc51c71b92129ffb6927"
     },
     {
       "path": "src/lib/system-fonts.cjs",
@@ -417,7 +417,7 @@
     },
     {
       "path": "src/lib/telnet-service.cjs",
-      "sha256": "dfbfff9bd8864aa1839734295f8aac18ec04f18b74d49ede5ac3d562ff15738e"
+      "sha256": "1f223f46e36c88b62038477599489375447bfc64c9bdcdb2e6ac0a2e48456db2"
     },
     {
       "path": "src/lib/terminal-appearance.cjs",
@@ -477,11 +477,11 @@
     },
     {
       "path": "src/main.cjs",
-      "sha256": "4b982b7b7d387c57b5a13b70753af3a5b9fa9580e9e926320a7265ebe6ca8bf4"
+      "sha256": "69470af9116ab2bf61d7ea574230bf80cd27b9042b6d8d5aef8dfb74bd7553dd"
     },
     {
       "path": "src/preload.cjs",
-      "sha256": "d90d50209c0f537892f7d55fb8ad26cd7bfa7b77f3ac9368eb7ae40a22fca620"
+      "sha256": "a6c94c6a0dd1cbb63e59b8709db062938017c5d4c270ef5b5e390554e1787b96"
     },
     {
       "path": "src/renderer/advanced-terminal-ui.js",
@@ -493,7 +493,7 @@
     },
     {
       "path": "src/renderer/app.js",
-      "sha256": "a3e28e69434f304a0b577b84004d53244c3628a1e0c3b9429eccdcca95646b8c"
+      "sha256": "150c3b2d95496c5c9aba806ac5579462800f8e4db8a449d40738cc7a3ba69f47"
     },
     {
       "path": "src/renderer/batch-ui.js",
@@ -505,7 +505,7 @@
     },
     {
       "path": "src/renderer/command-dispatch.cjs",
-      "sha256": "23990ed54ad4b1276b8ea22235702cbc666e88b850a8bae669153b04f6af8031"
+      "sha256": "c0bf797db5e0eb24fc80cfe4a3737998edb62c48be3bb712f37bc4f118537803"
     },
     {
       "path": "src/renderer/command-privacy.cjs",
@@ -640,7 +640,7 @@
     },
     {
       "path": "tests/command-dispatch.test.cjs",
-      "sha256": "37d523fa161262e134eea1a394f558252f1e16a62192c6eb2539983a6055029e"
+      "sha256": "a3d8ea09671c426f6c6ec49db469e90ce41d9c42b35075b877aedd76f84388b4"
     },
     {
       "path": "tests/dependency-security.test.cjs",
@@ -679,7 +679,7 @@
     },
     {
       "path": "tests/sftp-transfer-policy.test.cjs",
-      "sha256": "36c28a6b83212d23ecf4be18bf3767f0fd4c8856adc0763c49f3c62e28a6fb7f"
+      "sha256": "26783169de0e9e689a4410786445ec48e0b46ffee53228e2597dbf94c3ec509c"
     },
     {
       "path": "tests/telnet-service.test.cjs",

@@ -565,6 +565,15 @@ function installHandlers() {
     try { terminalOutput?.noteInput(id, { bytes: data.length }); } catch { /* a hint must not block input */ }
     return ssh.input(id, data);
   });
+  handle('ssh:command-input', (id, data) => {
+    if (typeof id !== 'string' || ownerEpochOf(id) !== rendererEpoch ||
+        typeof data !== 'string' || data.length > 1024 * 1024 || updateShutdown || quitting) {
+      return { status: 'not-sent', retryable: false };
+    }
+    return ssh.commandInput(id, data, () => {
+      try { terminalOutput?.noteInput(id, { bytes: data.length }); } catch { /* a hint must not block input */ }
+    });
+  }, { mainFrame: true });
   handle('ssh:resize', (id, cols, rows) => ssh.resize(id, cols, rows));
   handle('ssh:logging', (id, enabled) => ssh.setLogging(id, !!enabled));
   handle('ssh:info', id => ssh.getConnectionInfo(id));
@@ -619,20 +628,26 @@ function installHandlers() {
     if (chosen.canceled) return null;
     const existing = await ssh.listDirectory(id, remoteDirectory);
     const existingNames = new Set(existing.entries.map(entry => entry.name));
+    const notifySkipped = name => dialog.showMessageBox(window, {
+      type: 'info', title: '업로드 건너뛰기',
+      message: `원격에 “${name}” 파일이 있어 업로드하지 않았습니다. 기존 파일은 그대로입니다.`,
+      detail: '다른 이름으로 저장하려면 로컬 파일의 이름을 변경한 뒤 다시 업로드해 주세요.',
+      buttons: ['건너뛰기'],
+    });
     let count = 0;
     for (const localPath of chosen.filePaths) {
       const name = path.basename(localPath);
-      let overwrite = false;
-      if (existingNames.has(name)) {
-        const answer = await dialog.showMessageBox(window, { type: 'question', title: '파일 덮어쓰기', message: `${name} 파일이 이미 있습니다. 덮어쓰시겠습니까?`, buttons: ['취소', '덮어쓰기'], defaultId: 0, cancelId: 0 });
-        if (answer.response !== 1) continue;
-        overwrite = true;
-      }
+      if (existingNames.has(name)) { await notifySkipped(name); continue; }
       try {
-        await ssh.upload(id, localPath, path.posix.join(existing.path, name), { overwrite });
+        await ssh.upload(id, localPath, path.posix.join(existing.path, name));
         existingNames.add(name);
         count++;
-      } catch (error) { if (error.code === 'TRANSFER_CANCELLED') return { count, cancelled: true }; throw error; }
+      } catch (error) {
+        if (error.code === 'TRANSFER_CANCELLED') return { count, cancelled: true };
+        if (error.code !== 'UPLOAD_DESTINATION_EXISTS') throw error;
+        existingNames.add(name);
+        await notifySkipped(name);
+      }
     }
     return { count };
   });

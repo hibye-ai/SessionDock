@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('sessionDock', Object.freeze({
   saveSnippet: invoke('snippets:save'), deleteSnippet: invoke('snippets:delete'), saveSettings: invoke('settings:save'),
   saveLayout: invoke('settings:layout'),
   readLayout: invoke('settings:layout-read'),
-  connect: invoke('ssh:connect'), disconnect: invoke('ssh:disconnect'), disconnectAndWaitClosed: invoke('ssh:disconnect-and-wait-closed'), input: invoke('ssh:input'), resize: invoke('ssh:resize'),
+  connect: invoke('ssh:connect'), disconnect: invoke('ssh:disconnect'), disconnectAndWaitClosed: invoke('ssh:disconnect-and-wait-closed'), input: invoke('ssh:input'), commandInput: invoke('ssh:command-input'), resize: invoke('ssh:resize'),
   quickConnect: invoke('ssh:quick-connect'), releaseTemporary: invoke('ssh:release-temporary'),
   connectAddress: invoke('ssh:address-connect'), chooseLogDirectory: invoke('dialog:log-directory'), logPreview: invoke('settings:log-preview'),
   acknowledgeOutput: (id, sequence) => ipcRenderer.send('terminal:ack', id, sequence), outputStats: invoke('terminal:stats'),
