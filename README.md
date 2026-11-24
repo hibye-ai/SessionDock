@@ -77,10 +77,6 @@
       <td valign="top"><strong>무결성 검사 (SHA-256)</strong></td>
       <td valign="top"><code>Get-FileHash -Algorithm SHA256 .\SessionDock.zip</code>의 출력값을 <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">GitHub Release</a>의 SHA-256과 비교하세요.</td>
     </tr>
-    <tr>
-      <td valign="top"><strong>업데이트 채널</strong></td>
-      <td valign="top">이 버전의 기본 업데이트 채널은 공식 SessionDock 서버이며, 설정에서 로컬 폴더 업데이트를 선택할 수 있습니다.</td>
-    </tr>
   </tbody>
 </table>
 
