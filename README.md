@@ -12,11 +12,11 @@
 </p>
 
 <p>
-  <a href="https://sessiondock.norahc.com/SessionDock.zip">
+  <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/cta-download-dark.svg">
       <source media="(prefers-color-scheme: light)" srcset="docs/cta-download-light.svg">
-      <img src="docs/cta-download-dark.svg" alt="Windows 다운로드 — v0.1.8 · 64-BIT · 152 MB" width="306" height="68">
+      <img src="docs/cta-download-dark.svg" alt="Windows 다운로드 — 64-BIT · 152 MB" width="306" height="68">
     </picture>
   </a>
 </p>
@@ -84,11 +84,11 @@
   <tbody>
     <tr>
       <td width="34%" valign="top"><strong>압축 해제 후 실행</strong></td>
-      <td valign="top">Windows x64용 <a href="https://sessiondock.norahc.com/SessionDock.zip"><code>SessionDock.zip</code></a>을 내려받아 새 폴더에 압축을 풀고 <code>SessionDock.exe</code>를 실행하세요. 별도 설치가 필요 없는 포터블 방식입니다.</td>
+      <td valign="top">Windows x64용 <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8"><code>SessionDock.zip</code></a>을 내려받아 새 폴더에 압축을 풀고 <code>SessionDock.exe</code>를 실행하세요. 별도 설치가 필요 없는 포터블 방식입니다.</td>
     </tr>
     <tr>
       <td valign="top"><strong>무결성 검사 (SHA-256)</strong></td>
-      <td valign="top"><code>Get-FileHash -Algorithm SHA256 .\SessionDock.zip</code>의 출력값을 <a href="https://sessiondock.norahc.com/update/latest">공식 업데이트 정보</a>의 <code>sha256</code>과 비교하세요.</td>
+      <td valign="top"><code>Get-FileHash -Algorithm SHA256 .\SessionDock.zip</code>의 출력값을 <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">GitHub Release</a>의 SHA-256과 비교하세요.</td>
     </tr>
     <tr>
       <td valign="top"><strong>업데이트 채널</strong></td>
@@ -149,7 +149,7 @@ SessionDock 소스는 MIT 라이선스로 제공됩니다. 자세한 내용은 [
   <code>&gt;_</code>&nbsp;&nbsp;<strong>SessionDock</strong><br>
   <sub>
     <a href="https://sessiondock.norahc.com/">공식 사이트</a> ·
-    <a href="https://sessiondock.norahc.com/SessionDock.zip">Windows 다운로드</a> ·
+    <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">Windows 다운로드</a> ·
     <a href="LICENSE">MIT License</a>
   </sub>
 </div>

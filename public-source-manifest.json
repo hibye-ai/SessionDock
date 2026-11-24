@@ -21,7 +21,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "1e24def48ead3c7de028d87243a83076e67c067399bf6dfdf593fb01c749022a"
+      "sha256": "da9555566fbe55654f4dd2d4480e42514b659027e5338c7310eafb087c5134db"
     },
     {
       "path": "assets/automation/python_bridge.py",
@@ -89,11 +89,11 @@
     },
     {
       "path": "docs/cta-download-dark.svg",
-      "sha256": "19dfedc886218969f83c847332bdbc46e1dab8e26c1cc237928c3bea8e129289"
+      "sha256": "45354c128c9ed0c6119b097a67114aa065f74e705e26abf4c87b286536fed347"
     },
     {
       "path": "docs/cta-download-light.svg",
-      "sha256": "7ed5b1711ff027aba0d00d542d0ae7961808c859c38c6b96f2d937ca6b2b94f5"
+      "sha256": "830639808a447715d99a0b8fb2c80450b6949a3b9ae48bf7b6fe1a7beb65dda6"
     },
     {
       "path": "docs/readme-hero.png",
