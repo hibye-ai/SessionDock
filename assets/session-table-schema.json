@@ -1,0 +1,17 @@
+{
+  "headers": ["폴더", "이름", "주소", "프로토콜", "포트"],
+  "fields": ["folder", "name", "host", "protocol", "port"],
+  "aliases": {
+    "folder": ["폴더", "폴더경로", "folder", "folderpath", "path"],
+    "name": ["이름", "세션이름", "장비명", "name", "sessionname"],
+    "host": ["주소", "호스트", "ip", "ip주소", "host", "hostname", "address"],
+    "protocol": ["프로토콜", "protocol", "proto"],
+    "port": ["포트", "port"],
+    "id": ["id", "세션id", "sessionid"]
+  },
+  "sampleRows": [
+    ["폴더1/폴더2", "예시 SSH", "192.0.2.10", "ssh", "22"],
+    ["폴더1", "예시, Telnet", "examplehost", "telnet", "23"],
+    ["폴더2", "예시 IPv6", "2001:db8::10", "ssh", "2222"]
+  ]
+}

@@ -1,0 +1,757 @@
+{
+  "schemaVersion": 1,
+  "publicationApproved": false,
+  "scope": "SessionDock 0.1.8 public source snapshot and Windows build inputs.",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "5445c7daa2a2e270a85e1cdc800c8693c78738c6a7c1708471099d0c0327f6f8"
+    },
+    {
+      "path": ".github/workflows/windows.yml",
+      "sha256": "53ff03b056c7a60fa83d19159b220d671d4427ee92a8ff75413bfea5e851b3ee"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "3d157f42ae5a886d0615c43a961c31ef44771c0e5420bf9089d060224a0aaa89"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "4b79bd27c1663f4b81e23f1a19a883d6bea69b0b386dd2a15a43bd9673469db6"
+    },
+    {
+      "path": "README.md",
+      "sha256": "a5eeb345e0aeaa02c86fd834c440fe32f29345dd0bdbc263b9d92f14e9d64e5d"
+    },
+    {
+      "path": "admin/.gitignore",
+      "sha256": "ee34e8b3f502d4f9d59d58116f63fab6fe44d437424d62601539416cf3600dfb"
+    },
+    {
+      "path": "admin/README.md",
+      "sha256": "661eb042a82e35c43b59f1cd026be8f6b8e3d782bb1e82b38f0776a7be32fcff"
+    },
+    {
+      "path": "admin/SessionDockAdmin.spec",
+      "sha256": "b5ad4e2613f02a0a7bcc11b4383955571ddf65b85894700ec7a3c30c423a89dd"
+    },
+    {
+      "path": "admin/build.ps1",
+      "sha256": "178d3efb4090aa897824024f5ce911d647e19da7a9882a9ed0df34e38f539359"
+    },
+    {
+      "path": "admin/core.py",
+      "sha256": "b6c0ab07e143f259551bbcb0f0f0ef90c39aa00327886623d00d51897fb0c00d"
+    },
+    {
+      "path": "admin/main.py",
+      "sha256": "e5c433050bcfb862384a75b4759e261b27975171dc41c61ec86417897ffe25ce"
+    },
+    {
+      "path": "admin/requirements.txt",
+      "sha256": "fde7b89dd9df094e0943dfa1c6de579d1c44d4e699f6ef2b5134242fdb3cb1b2"
+    },
+    {
+      "path": "admin/tests/test_core.py",
+      "sha256": "68f11211f782e60004c937a405a8602b8a40552226d0eabefd205b061d77c480"
+    },
+    {
+      "path": "admin/tests/test_ctrl_arrow_mode.py",
+      "sha256": "2c9db51f67216135882233f035bbdfbc40b1758241842650c9a2d31942038f47"
+    },
+    {
+      "path": "admin/tests/test_identity_reload.py",
+      "sha256": "08f4622742b510cf254e032fefecc97e42f5a2432ab7a95bb60a8560345673d5"
+    },
+    {
+      "path": "admin/tests/test_import_comparison.py",
+      "sha256": "17fe60a1af518da2b6000089964703ba9d15a8f750b293f57d3c3ae534884aef"
+    },
+    {
+      "path": "admin/tests/test_import_resolution.py",
+      "sha256": "b249b90d46ade49c238d0fe0cae75956296544897b438b3bb38c5a7e930de6fb"
+    },
+    {
+      "path": "admin/tests/test_paste_direct.py",
+      "sha256": "dd7d63bf1aae1fea9f98e322d1269e0c96d1d2c12080cce9dac14e51e67d0bf7"
+    },
+    {
+      "path": "admin/tests/test_publish_failure.py",
+      "sha256": "9b238f64fa5a2557502f8af22a67fffa2117368e473db40644b81901723e510c"
+    },
+    {
+      "path": "admin/tests/test_refresh.py",
+      "sha256": "0e02bcbacb721b67316d15f00b88256f953c7dcb1c74bfec91edd8195e355437"
+    },
+    {
+      "path": "admin/tests/test_replacement_comparison.py",
+      "sha256": "7f74822ce25dc445608f8e670ed83bcf30f0f9160e5ccac2ce818196c6b87e00"
+    },
+    {
+      "path": "admin/tests/test_table_auto.py",
+      "sha256": "9ee75a44d01f80ca1b3d31022d1c6fc58607dc2cd0c4e2b43f0827f6e37c5d85"
+    },
+    {
+      "path": "admin/tests/test_ui.py",
+      "sha256": "1fba9175bd1d74f98ce4e6e33ce656370498f6a9b65ad98a3cba9898bf2ad2dc"
+    },
+    {
+      "path": "admin/ui.py",
+      "sha256": "b8a86669e41442e58e9647fd206f37b38af4732833819eb96c1cac20b44dc8c3"
+    },
+    {
+      "path": "assets/automation/python_bridge.py",
+      "sha256": "e8f1b260fc71af9233d15214ccccfae327634446bb9fd1eafcbf4d42f4afc9e0"
+    },
+    {
+      "path": "assets/automation/update_helper.py",
+      "sha256": "1e4e35acec1d3ebf7deb4003020fd8c29e9442db4ce83cbf7b9833c716769d90"
+    },
+    {
+      "path": "assets/icon.ico",
+      "sha256": "f17acac315253ca35485a27ff12c897ede410576f44c482e9af02c16184bedd2"
+    },
+    {
+      "path": "assets/icon.png",
+      "sha256": "3a3dadec0771ea2f22aac6c93b8bbf03654d70c5586776deb058b21f5c25eeaa"
+    },
+    {
+      "path": "assets/icon.svg",
+      "sha256": "fbb459e407b883188b37e71f28e70e78988796a462cd30b4ad823d3e4c92f309"
+    },
+    {
+      "path": "assets/session-table-schema.json",
+      "sha256": "84c4ddd2990dd557e95b67ad90861804a3ce63c5e0aac88f679830a15ceff970"
+    },
+    {
+      "path": "assets/ssh2-auth-patch.json",
+      "sha256": "bdf9bf40a04687de3d0f8bb5253dac35a5541563105db50d2817d2694ea087b4"
+    },
+    {
+      "path": "assets/ssh2-dsa-patch.json",
+      "sha256": "c6a3176a85dc47109063a7a813a6b1919c7b03687f0623ae53869721858bb0ac"
+    },
+    {
+      "path": "assets/ssh2-ecdsa-patch.json",
+      "sha256": "502f5d5aec04689ba0da0a1dd647c035d69cbd29c493b8b17b5d26f094518988"
+    },
+    {
+      "path": "assets/ssh2-legacy-patch.json",
+      "sha256": "af238cc4014620718b1cffc0d083824ef637a00a124bf9db25dbd1ec27fc827b"
+    },
+    {
+      "path": "assets/ssh2-window-patch.json",
+      "sha256": "58c4a4f7d36de87372684084017f31c9d0186d56b16a630caa3916a25f6dc90b"
+    },
+    {
+      "path": "assets/third-party/saxes-v6-LICENSE.txt",
+      "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e"
+    },
+    {
+      "path": "assets/third-party/saxes.json",
+      "sha256": "14ee51dd83ec9d9f45d65a5865cf1ba8a2467885e4970e6e64b8d1ac124b5a1a"
+    },
+    {
+      "path": "assets/xterm-webgl-cursor-patch.json",
+      "sha256": "feae00e1604bfbdcd05caf5aaf713f2e4e4e460ccd3525403820500b9171e71c"
+    },
+    {
+      "path": "assets/xterm-work-budget-patch.json",
+      "sha256": "f9c1e47dc706e4a5a66eb7f93837bc17f5940470830bccf4774791542d26b068"
+    },
+    {
+      "path": "build-inputs/python-runtime-manifest.json",
+      "sha256": "981e5be7a7673b4d92d6458444765f8d97b4d1d08685ef723f496758ebcb8261"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "8f21e6e35c8b5830d39e9c7cf3afeed98c04d4ebb87ce3a6e4500a3f2234213f"
+    },
+    {
+      "path": "package.json",
+      "sha256": "175d3a554ee32423b3d3e1682278dcaeec5331584fcc275ed69d2928dac3df9f"
+    },
+    {
+      "path": "scripts/after-pack.cjs",
+      "sha256": "09b8331191e65de37e150934fe1853fa3d98444e2048e9d8fcf465654fa842bc"
+    },
+    {
+      "path": "scripts/batch-fixture.cjs",
+      "sha256": "4ebf3edd7e072dea8c83d4786f4d2fb1dcb3bce120e96020ee9272aa36f00bac",
+      "reviewedFindings": [
+        {
+          "category": "credentialLiteral",
+          "count": 1,
+          "reason": "Literal credentials for the loopback batch fixture."
+        }
+      ]
+    },
+    {
+      "path": "scripts/build-release.cjs",
+      "sha256": "93eeee102ffd6a2d07ea6ef53ab4ae701dca8050af6ceb2a101ec4c11f09b921"
+    },
+    {
+      "path": "scripts/color-fixture.cjs",
+      "sha256": "c051c4ec52b84be260a4b8cb3a933c0814e713d98689591a0b160ef40eac1e4a",
+      "reviewedFindings": [
+        {
+          "category": "privateIPv4",
+          "count": 2,
+          "reason": "Static example addresses in synthesized terminal output."
+        }
+      ]
+    },
+    {
+      "path": "scripts/integration-test.cjs",
+      "sha256": "d3a62ac6b81435448284520128563a2b79525de2643c0dec2f85cf087deeb7f6",
+      "reviewedFindings": [
+        {
+          "category": "credentialLiteral",
+          "count": 2,
+          "reason": "Literal credentials for the loopback SSH server fixture."
+        }
+      ]
+    },
+    {
+      "path": "scripts/package-security.cjs",
+      "sha256": "afe290265a328ff77e20e5939aef4bcbad7005b65b5668535315359b2872c927"
+    },
+    {
+      "path": "scripts/packaged-location.cjs",
+      "sha256": "19fe235911373eeb73803c2ee823965fe8516725895afeb0450cb3dac4069b17"
+    },
+    {
+      "path": "scripts/patch-ssh2-auth.cjs",
+      "sha256": "d605bd2bdf6e6896ed297c660b1064da0845a5281852357525f268e6ff2e77e7"
+    },
+    {
+      "path": "scripts/patch-ssh2-dsa.cjs",
+      "sha256": "64d4b0a9f81c1137c29ab98c269994e1d31a066011feafff9d3418fc82319a74"
+    },
+    {
+      "path": "scripts/patch-ssh2-ecdsa.cjs",
+      "sha256": "18a28b3ffaf366dfb27d83576397ed980039359343a0fdd752b54f348528a662"
+    },
+    {
+      "path": "scripts/patch-ssh2-legacy.cjs",
+      "sha256": "de83b38e005ab3e1a051711617840790333e6cd4ffb06b32b58140835092f63a"
+    },
+    {
+      "path": "scripts/patch-ssh2-window.cjs",
+      "sha256": "d4c06abb02ce179ba6e2e4fce448c241b9d1fd4dcbfacb00836cb59c630c0831"
+    },
+    {
+      "path": "scripts/patch-xterm-webgl.cjs",
+      "sha256": "49147a6655975740e7659a2ddcf48b0ea326e16d3f0e4ea010863b5d3dac0482"
+    },
+    {
+      "path": "scripts/patch-xterm-work-budget.cjs",
+      "sha256": "4953e5446f145ca026acd3b68597cfeeba0d7abcd13a87bca9e9609c96e204bc"
+    },
+    {
+      "path": "scripts/prepare-windows.ps1",
+      "sha256": "5ca43cfec5c3ce4d236d73f9e1318c877ae13f30d860e06b643d737dd52e5353"
+    },
+    {
+      "path": "scripts/public-source.cjs",
+      "sha256": "fb1ea96cc84c37de739e64381ffcbf6204fc2e73074cfd2cb279bce62655e5bc"
+    },
+    {
+      "path": "scripts/publish-portable.cjs",
+      "sha256": "f6260328a1ef5951be04a0a15b82a95f6779b1ef50d909a139caa1fe7b104530"
+    },
+    {
+      "path": "scripts/release-integrity.cjs",
+      "sha256": "e30c622f7d92ce6a0e398dee7b3d01a40b29f88b27f92f3de9a63f19ea752555"
+    },
+    {
+      "path": "scripts/release-manifest.cjs",
+      "sha256": "07479222177e61cea87ffb6eb74fc40af4aa0d62520276115382f2601d826975"
+    },
+    {
+      "path": "scripts/ssh-fixture.cjs",
+      "sha256": "a47693c89184265ad2c56db1e5662e8ca23a76ed506fbc1bcacd012c6c526e29"
+    },
+    {
+      "path": "scripts/verify-package.cjs",
+      "sha256": "a7563ed52ec5275cd0ba6852cacbb6755810850178bb07c4bcafbec4ca7c87a9"
+    },
+    {
+      "path": "scripts/verify-release-signature.cjs",
+      "sha256": "310e16dee10c2166fb77560b3a42fb99f84b6e9e09102210c99010a41aea664c"
+    },
+    {
+      "path": "scripts/verify-reviewed-assets.cjs",
+      "sha256": "eda3e6c29ee566b0d1e13ee97398839d3494395ca9e8f843497e692403337f42"
+    },
+    {
+      "path": "scripts/xterm-work-budget.md",
+      "sha256": "9f9897a06782265a89f9a380a63527758a2dce172efd88a8ede4644a847c8821"
+    },
+    {
+      "path": "src/lib/app-protocol.cjs",
+      "sha256": "f153156125a29eed458e7d9b05be28d0d5671273df78706c91b5199930628d3e"
+    },
+    {
+      "path": "src/lib/atomic-rename.cjs",
+      "sha256": "5550dfc5b033aafa487d1933425eae404071cce0ee434642cf25e4f11c7f8ca2"
+    },
+    {
+      "path": "src/lib/automation-regex-worker.cjs",
+      "sha256": "375de9cfce59b38c4a15e58ce6d09e3c85872e00d3c4680d62499880359606d5"
+    },
+    {
+      "path": "src/lib/automation-regex.cjs",
+      "sha256": "eb9602b0060639e224a487b24b4f8dab14070c9678dacc980c1a3a337aad3638"
+    },
+    {
+      "path": "src/lib/automation-screen.cjs",
+      "sha256": "71869fc1d697af3edd0ef55644e91f8cd59731f03445588372579925ebfbe9a0"
+    },
+    {
+      "path": "src/lib/automation-service.cjs",
+      "sha256": "b15f4653bfe861ad800d328a70407d44c8d08048a44599895b4653f1435e337e"
+    },
+    {
+      "path": "src/lib/batch-export-async.cjs",
+      "sha256": "80961318297887d33d40b540520b241491ba245e46fe19aa0e410f1e98cc8ea7"
+    },
+    {
+      "path": "src/lib/batch-export-worker.cjs",
+      "sha256": "6f9cc080114908e984a233c58f7cc5cf288b06fc7b5f4f8b6fa2b1b4ad087a50"
+    },
+    {
+      "path": "src/lib/batch-export.cjs",
+      "sha256": "487b84ee6d609baa5ad6d5fed03beed37c02ee38bd919a1cf1300fac163a6de6"
+    },
+    {
+      "path": "src/lib/batch-plan.cjs",
+      "sha256": "00d435297ae9cc67bf1b355ad781fb8a829d24708349932b49fa12e496058798"
+    },
+    {
+      "path": "src/lib/batch-search.cjs",
+      "sha256": "7e258e57c75b7fecb5dc7398847eed3763e0b2386e2d7ffb516d66383908c100"
+    },
+    {
+      "path": "src/lib/batch-service.cjs",
+      "sha256": "f8f4698831b7e83a69a49c3fc552e428b5dcd5b130dd97264254aa58899078bc"
+    },
+    {
+      "path": "src/lib/batch-terminal.cjs",
+      "sha256": "3c4502bcf1c7ee28fe76a3bf1083f829217c90bd52a793892719dc3bc0f00349"
+    },
+    {
+      "path": "src/lib/clipboard-write.cjs",
+      "sha256": "0882e706f8967f170f56dfe2037cb2dd5df8aca343a14f6300dcf66b40959a1b"
+    },
+    {
+      "path": "src/lib/connection-address.cjs",
+      "sha256": "c825d0d6f7d4e7ff941c5beb0199c81cff15c1a579f9e54154ac3498a8ada84a"
+    },
+    {
+      "path": "src/lib/connection-service.cjs",
+      "sha256": "e1c65d80d9bc81965e1c947e85e50ef18d9833c148cdff5cefe351abcbd8a9f1"
+    },
+    {
+      "path": "src/lib/disconnect-cause.cjs",
+      "sha256": "643e336427df25b1eeb2daaaae1f32bdea5d71a5229a37b51f3dddf47b9fb690"
+    },
+    {
+      "path": "src/lib/dsa-host-key.cjs",
+      "sha256": "48ec57e132e6f5f01b7e79e3c2b3523e08aefdc759930787e78fc9af3b8494ed"
+    },
+    {
+      "path": "src/lib/folder-shared-export-ipc.cjs",
+      "sha256": "4c90b5fd6b9f092bd7f895a0a7b404249088e032eca39e52379df7be271bbf98"
+    },
+    {
+      "path": "src/lib/folder-shared-export.cjs",
+      "sha256": "102d3953dc392b384d1e66311dfc561c71c67953f976f1cefe7704c97f8ea003"
+    },
+    {
+      "path": "src/lib/hybrid-connect.cjs",
+      "sha256": "34a870dbaf2d8f4277f431a7eefd148b1166efa8fe588c067891604f420bb9fd"
+    },
+    {
+      "path": "src/lib/interaction-settings.cjs",
+      "sha256": "beb9278c49c30b430df1580860aff9b2e9eac021d9cf84904091457a89061a12"
+    },
+    {
+      "path": "src/lib/layout-settings.cjs",
+      "sha256": "42abfbb9c40cf72f7d204ca3bcbfd01bbf2620e3ccd2fe8a57912fa31b56c9b5"
+    },
+    {
+      "path": "src/lib/log-loss-journal.cjs",
+      "sha256": "8614dda71e418a50647f7f88b4ce231c805f97a69dfa25581ad851e738d1134e"
+    },
+    {
+      "path": "src/lib/logging-settings.cjs",
+      "sha256": "2fd7bb0838062c6d6a7cb93ed8efdeaad5320159b3290bfa5c3f28f93168303c"
+    },
+    {
+      "path": "src/lib/port-probe.cjs",
+      "sha256": "95d105b5e40241c5ae8a38ad35c52b86d3807e9eb43ff91450fdab8c427bb53f"
+    },
+    {
+      "path": "src/lib/putty-import.cjs",
+      "sha256": "e5e47e6f0f56019e23e69bc85ee58f2a885a483f8d49149c6819755a452f42f4",
+      "reviewedFindings": [
+        {
+          "category": "credentialLiteral",
+          "count": 1,
+          "reason": "Korean WARNING object display label, not a credential value; product logic unchanged."
+        }
+      ]
+    },
+    {
+      "path": "src/lib/putty-registry.cjs",
+      "sha256": "b72d19b79c690d4e8f25ea6a1d9fe36361a517a0ec2746a536aec02b0c7cc27d"
+    },
+    {
+      "path": "src/lib/rotating-log.cjs",
+      "sha256": "3aa1d562735d83175c9a97298538c500e3f256ce2469134e5ce513c374da2e3e"
+    },
+    {
+      "path": "src/lib/securecrt-import.cjs",
+      "sha256": "1c7cdd7e6194a97c3d2890a272e742243a0ef39815f7ce33ce97f723f775452d"
+    },
+    {
+      "path": "src/lib/service-shutdown.cjs",
+      "sha256": "218e70e98891abba693ec7a151abe6fb8b26991b3a5ed6a45a5e86d1738dab4a"
+    },
+    {
+      "path": "src/lib/session-file.cjs",
+      "sha256": "b44021ccbc70597395267934a242381fc9360964f41778d15f9b9fa8b7b81330"
+    },
+    {
+      "path": "src/lib/session-store.cjs",
+      "sha256": "c4bb79d3e341f8e8fec02fcb884fdd1f49544a6d51c5b2972dc4dd745ec16cb2"
+    },
+    {
+      "path": "src/lib/session-table-ipc.cjs",
+      "sha256": "a4328e2a1354abeb44c43f33985b47ae8020d717753603acd5c8055adfee14ad"
+    },
+    {
+      "path": "src/lib/session-table.cjs",
+      "sha256": "95b14fad2619f65a719cbf566ff99310620f181196b0f47ae0153a495ebd68cb"
+    },
+    {
+      "path": "src/lib/shared-sessions.cjs",
+      "sha256": "68b6c236578ba83551fc573423966d251d5e2f4ccb957d7b4f8c972db53114dc"
+    },
+    {
+      "path": "src/lib/shared-startup.cjs",
+      "sha256": "8ccbaf8b8f5f65527b2bed1a8d0aaa6589c9018c11ccd59b0078e25f5d36282b"
+    },
+    {
+      "path": "src/lib/shortcut-catalog.cjs",
+      "sha256": "fc0461ca9c249e8514657ce978e4b739222c5432d8794205a2cd386a6e1403a3"
+    },
+    {
+      "path": "src/lib/shortcut-config.cjs",
+      "sha256": "77e80ebc1b3bcc9a8e48f49a7296603aa6fb6864d660a42196ca7637ae5db61a"
+    },
+    {
+      "path": "src/lib/shortcut-keys.cjs",
+      "sha256": "5571f49459bc2253ef90183eb08c5613e1fbbe48b685891d56ff2833bff0d060"
+    },
+    {
+      "path": "src/lib/shortcut-overrides.cjs",
+      "sha256": "4d155caeec7370cd279cf60621f0c9bb78e0df8d59ecb2e10eb4a60948df2585"
+    },
+    {
+      "path": "src/lib/shortcut-resolver.cjs",
+      "sha256": "160fded5407818f150cee814718b78d31e8fb16fa72c005e23f1c340ff634d8e"
+    },
+    {
+      "path": "src/lib/ssh-authentication.cjs",
+      "sha256": "cec0180dd525026360e9589a4c8c77c07f13229af5a3b64499a45ab51f08a8df"
+    },
+    {
+      "path": "src/lib/ssh-compatibility.cjs",
+      "sha256": "f8b9d6e86952a09afe533a365fccc01eea7bb37d18b01ffff692be9448ecf9bb"
+    },
+    {
+      "path": "src/lib/ssh-service.cjs",
+      "sha256": "91f27b3f2403c34df9ce9bb2c064774f89fbaea3f4a225c9b0b424af02dc7983"
+    },
+    {
+      "path": "src/lib/system-fonts.cjs",
+      "sha256": "7fed719163e299c488dba128fe23045354850f7097cf86ddfe5e5aa3878be47c"
+    },
+    {
+      "path": "src/lib/telnet-service.cjs",
+      "sha256": "dfbfff9bd8864aa1839734295f8aac18ec04f18b74d49ede5ac3d562ff15738e"
+    },
+    {
+      "path": "src/lib/terminal-appearance.cjs",
+      "sha256": "6581182ed4e314f4ddf94690727a2091610433bf660e34ee0a62f7cf9feb964b"
+    },
+    {
+      "path": "src/lib/terminal-encoding.cjs",
+      "sha256": "459e08dfa1716c4d85564c71f7da6f480df2cd42be95048042c38f98ebf0f16f"
+    },
+    {
+      "path": "src/lib/terminal-log-queue.cjs",
+      "sha256": "9145050aaae0ae51b56bf78eed17e8d6ccf80ba18071ac160e664dda60b46c09"
+    },
+    {
+      "path": "src/lib/terminal-output.cjs",
+      "sha256": "d854863adcc86edcd0055f96562aae89834f46d1dade065a0cc1bef631ad2ad1"
+    },
+    {
+      "path": "src/lib/update-https.cjs",
+      "sha256": "178ab03874dffa1d8304dc144b5350d2a2688afe589abc9e169d4a3b559a00c8"
+    },
+    {
+      "path": "src/lib/update-restart.cjs",
+      "sha256": "e1c50085e78c41d97e0714f986c99f2660f867a8d04b0c49d7e7ce5dae5b6c73"
+    },
+    {
+      "path": "src/lib/update-result.cjs",
+      "sha256": "bc72d09fc96d9579aabe51c3b10a73a1adc6bafecab4f3c6aac375efe8034e43"
+    },
+    {
+      "path": "src/lib/update-service.cjs",
+      "sha256": "ac40bb3ad31f15eeaac4cf926ae8f893e4d7c1c100bd66913765166c0111b67e"
+    },
+    {
+      "path": "src/lib/window-caption.cjs",
+      "sha256": "31ef57c0f1f9839bab977d2bf35142fec15d8a9a666e1a71d949297cbd81b109"
+    },
+    {
+      "path": "src/lib/window-geometry.cjs",
+      "sha256": "9c33c7d76fe20b4993847ed17fffb91f064aa0f61d206ca20ba11e8e99109222"
+    },
+    {
+      "path": "src/lib/windows-shortcut.cjs",
+      "sha256": "84ed29fc3dacb7c95459764a59b6f53600b582c407b8b1d153aa28dea3ece001"
+    },
+    {
+      "path": "src/lib/windows-system-tools.cjs",
+      "sha256": "01e6150bc15a38e5b8977f22b8d3d2aad7eff1f6300b1c3956ef2b7d527d9fef"
+    },
+    {
+      "path": "src/lib/windterm-folders.cjs",
+      "sha256": "90afa9163d1624af6563c32c79971fb794bffa774182ac13c064195d2c49b067"
+    },
+    {
+      "path": "src/lib/windterm-import.cjs",
+      "sha256": "d0398fbb6091be689b46164efda2b2543e51b9e6631ff3541a3d709c3f5613c2"
+    },
+    {
+      "path": "src/main.cjs",
+      "sha256": "fc1f2a5424c935da3f6f6d11b16d1f0f389fffdbe12e199e5c23f4502530e6ac"
+    },
+    {
+      "path": "src/preload.cjs",
+      "sha256": "d90d50209c0f537892f7d55fb8ad26cd7bfa7b77f3ac9368eb7ae40a22fca620"
+    },
+    {
+      "path": "src/renderer/advanced-terminal-ui.js",
+      "sha256": "b7550aae6347f08f5d272ea85647bbebfb3cab6f38daf0225cbc4473b152e437"
+    },
+    {
+      "path": "src/renderer/advanced-terminal.css",
+      "sha256": "21a5c608814e5d32a21ef81a2c1f6a49f3be5c645636fba3c59e4c2411ed445a"
+    },
+    {
+      "path": "src/renderer/app.js",
+      "sha256": "9f2f8c9860c2a373eb50abd02f896c5b5992cf97c1fbeb7b178993acca8cdf6e"
+    },
+    {
+      "path": "src/renderer/batch-ui.js",
+      "sha256": "3e4089ac059345afdb8d807cc966fb2eff90894543e99193562a42e3e4dac95e"
+    },
+    {
+      "path": "src/renderer/batch.css",
+      "sha256": "d5198eacfccf76c5d7eda6f101b83df06047be752f11670e0124273883100448"
+    },
+    {
+      "path": "src/renderer/command-privacy.cjs",
+      "sha256": "97ede25b56048244bf79f6cad27c22fb3e6ee48e2c9dd77b767c89fabfe94c0e"
+    },
+    {
+      "path": "src/renderer/connection-choice.cjs",
+      "sha256": "cf7838d120aacc9cb356d9dde4687d74deef1adc0176cbf1f2fc8ee830a16f4b"
+    },
+    {
+      "path": "src/renderer/context-utils.cjs",
+      "sha256": "033723b480301cd0f8a47abc4bc28b10bd40e3bdf40a6c517787e3cd5e4bef40"
+    },
+    {
+      "path": "src/renderer/desktop.css",
+      "sha256": "c6a1774e1edeeffdc2ef149cc0e3f824b2984cb9e908e0d0c1f0cbfcbaf7248c"
+    },
+    {
+      "path": "src/renderer/font-picker.css",
+      "sha256": "fcc21d9a9bd286393996d2a84c084982eec18c247bbb7ee6b69e89117d698546"
+    },
+    {
+      "path": "src/renderer/font-picker.js",
+      "sha256": "0d5121aa35762876567c7725d54651c22e24cced99f6914747edbaf8aca8c09c"
+    },
+    {
+      "path": "src/renderer/ime-composition.js",
+      "sha256": "20a8d914798afacd5b346e677538b128f47aa2dfee09c8f6d5581da579b8f86f"
+    },
+    {
+      "path": "src/renderer/index.html",
+      "sha256": "eae12c5e34d6f0d9fd3b0c0affe087ec2e8b52df4d815cdbd1e1a685d5bfaa51",
+      "reviewedFindings": [
+        {
+          "category": "privateIPv4",
+          "count": 1,
+          "reason": "Static address example in the terminal color preview."
+        }
+      ]
+    },
+    {
+      "path": "src/renderer/layout-persistence.cjs",
+      "sha256": "f352e7b7a1781e2372cd9d57f28f2da48d001920aefe67ee1853f83808d8bb83"
+    },
+    {
+      "path": "src/renderer/operations-ui.js",
+      "sha256": "24b8907b1c34022343d08e0b343ec371234d624d134ce287647db254137681b0"
+    },
+    {
+      "path": "src/renderer/operations.css",
+      "sha256": "0a0299359454fe18870e922bea2f037505aaa478f25d749b3f59f94d9ba86824"
+    },
+    {
+      "path": "src/renderer/password-visibility.js",
+      "sha256": "9c619882daa98281fdd7ab057d7a9ae3dd87ea159261db913131fef54c643362"
+    },
+    {
+      "path": "src/renderer/reconnect-policy.cjs",
+      "sha256": "71473daeb8725eb995ec1d352976a6776f8fc6966790b7f83c01282942989a5f"
+    },
+    {
+      "path": "src/renderer/semantic-color-addon.js",
+      "sha256": "3a4b54fd45b7893b4be1be5dfb1b40328f03a661342590688dbfb2f5fdd66b7c"
+    },
+    {
+      "path": "src/renderer/session-data-feedback.cjs",
+      "sha256": "ee67a7fa58e74e765e6e0a6b665b2431a2adbe32a98b15473b59cc5f3611d325"
+    },
+    {
+      "path": "src/renderer/session-finder.cjs",
+      "sha256": "39ca3dd8eee4b648fd5a6dd236a482f6841560b85682597a51e412d68a50f75b"
+    },
+    {
+      "path": "src/renderer/session-tree-model.cjs",
+      "sha256": "5a532ec8e775e9ccbce8335f0f92208c7da16d6fb11aae6e141784ef47266b3d"
+    },
+    {
+      "path": "src/renderer/shortcut-capture.cjs",
+      "sha256": "49b518bb2312b1ea2548cfeb1b4ee976f287a062d3ea959162e64ba472b664aa"
+    },
+    {
+      "path": "src/renderer/shortcut-settings.cjs",
+      "sha256": "fe7c566abb7446a4139a248b057756d333e2243e4d797266cb1b49dfe6c28257"
+    },
+    {
+      "path": "src/renderer/terminal-color-presets.cjs",
+      "sha256": "c6832b70f87727c0f5a33d6aff78da33f7d59baf6e4d1c1f8d2cb86bdecbcb58"
+    },
+    {
+      "path": "src/renderer/terminal-colors.cjs",
+      "sha256": "621db8c52ea79df5ea749ea1a1861a469ae41850b96f65a4e92dc9fa017e7820"
+    },
+    {
+      "path": "src/renderer/terminal-compatibility.cjs",
+      "sha256": "3febe7e7a502e9be5de389a9ec997b6fd40cce22533ec5398a9d86311d977b4c"
+    },
+    {
+      "path": "src/renderer/terminal-dock-ui.js",
+      "sha256": "6a350cee69ce67418c9a49135f096c89cf0d7521d4b1760154a7ae3cd5a3608d"
+    },
+    {
+      "path": "src/renderer/terminal-docking.cjs",
+      "sha256": "646005d7c393469489c42a012c481d3cdfa5aa649caedd2f23486499fc897b0c"
+    },
+    {
+      "path": "src/renderer/terminal-gutter-addon.js",
+      "sha256": "1c0ce2f7301cf83fea7dc8a01ed30ade3e1ffb7d72e5916e631ea2f4d4873c8f"
+    },
+    {
+      "path": "src/renderer/terminal-gutter-metadata.js",
+      "sha256": "20425f5df330d2fd5eb128fc9d86ea6f08a654f114418cf162b4821d8014ebb0"
+    },
+    {
+      "path": "src/renderer/terminal-keymap.cjs",
+      "sha256": "9d425f07e44c70fa27207b6e455e681aa059540031cc4ba24111297ddedbc342"
+    },
+    {
+      "path": "src/renderer/terminal-resource-manager.js",
+      "sha256": "3c3abeb60fcee548c70b241eaa591a3da75b38b0784162408c227b4dce75e265"
+    },
+    {
+      "path": "src/renderer/terminal-screen-repaint.cjs",
+      "sha256": "8b28095d441dd7b70873b5ea074527ed55f35757af21a7ddc6e98e6663fe59aa"
+    },
+    {
+      "path": "src/renderer/terminal-stream-controller.js",
+      "sha256": "07e217b21c83bfc99c93214e790832f7f5143840eda66b9c7c8f4cfb918323e8"
+    },
+    {
+      "path": "src/renderer/windterm-shortcuts.cjs",
+      "sha256": "c9ef8095bbe4fdce418d22a6f60ec2a7873778260b45f422c3e198cf05bba04e"
+    },
+    {
+      "path": "tests/dependency-security.test.cjs",
+      "sha256": "21a757efd8dbc68e083bcb9c40aff205a52ec2a7238fddceb0ed1c77cf61a420"
+    },
+    {
+      "path": "tests/device-password-batch.test.cjs",
+      "sha256": "b37a5a1160de6caf6fbdf1aedf7f82afe9fc8049e1ec8732754d2f5e0a49ca08",
+      "reviewedFindings": [
+        {
+          "category": "credentialLiteral",
+          "count": 7,
+          "reason": "Synthetic credentials supplied to loopback test connections."
+        }
+      ]
+    },
+    {
+      "path": "tests/device-password-boundary.test.cjs",
+      "sha256": "2db18163931729efef087f19a958f98613c7fb900b94658988eb8142d0be0d77"
+    },
+    {
+      "path": "tests/device-password-store.test.cjs",
+      "sha256": "d4df366b9c4e254e0d8af62444dd6efb58c936ff9e4e03fda5bcf32f39950376"
+    },
+    {
+      "path": "tests/release-config.test.cjs",
+      "sha256": "a60148d8329711a5ec2a125d08b2fc89fbaf09ba994c41e9935be13c9537acc1"
+    },
+    {
+      "path": "tests/sessiondock-017-import-copy.test.cjs",
+      "sha256": "90da8c70728eceb0ad5ba77da58b89a85d0d3e12714be733fcf1de847d286d5c"
+    },
+    {
+      "path": "tests/sessiondock-017-update-notes.test.cjs",
+      "sha256": "5cc257b6c6d2a31640f6e9586a96846c2ac1169b6ac553a0ef8ff93c97166660"
+    },
+    {
+      "path": "tests/telnet-service.test.cjs",
+      "sha256": "e38e1dcd2f19fc5e73c0de8a922762d0e82ecc5227abcbd831fc1a3811248ed6"
+    },
+    {
+      "path": "tests/unsigned-release-fixture.cjs",
+      "sha256": "322b72fef271e2832192893728a3b1611f6ad9a35d00038494243d617ea57b91"
+    },
+    {
+      "path": "tests/update-internet.test.cjs",
+      "sha256": "b93d74f315808abffafb14041d96f5b43a17ec169b5049d3e7c729d3a2ed1083"
+    },
+    {
+      "path": "tests/update-service.test.cjs",
+      "sha256": "9821b9ca3c93ab177273d793711e3a96d4473c215b5d2c52c55f9795597146a7"
+    },
+    {
+      "path": "tests/updater_helper.py",
+      "sha256": "76453d38be7f0149cf03d7236d0534a5f0a0496eafc9900fedb97f71f44da07f"
+    }
+  ]
+}

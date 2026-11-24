@@ -1,0 +1,9 @@
+{
+  "dependency": "ssh2",
+  "version": "1.17.0",
+  "file": "node_modules/ssh2/lib/client.js",
+  "upstreamSha256": "edd3484daa9d942bc5a6412edc9cf11f85df40b2db10b07877bbfe694beac7f4",
+  "patchedSha256": "46c9880b997c39b10644d7875bd69ffcece6af6f1e2df933029e4532eae9cf18",
+  "reason": "Advance explicit partial authentication success to the next factor before agent/key retry. Ordinary rejection, signature verification and host trust are unchanged.",
+  "reference": "https://www.rfc-editor.org/rfc/rfc4252.html#section-5.1"
+}

@@ -1,0 +1,9 @@
+{
+  "dependency": "ssh2",
+  "version": "1.17.0",
+  "file": "node_modules/ssh2/lib/protocol/utils.js",
+  "upstreamSha256": "402b39e75ede9e3dc99af5e8af008602546f35aa1472bd4232c06f606987f053",
+  "patchedSha256": "7cf4af5088a271a8df0f01ad628589001773709a2151a6a8c2b6ea4a8da09943",
+  "reason": "Canonicalize redundant leading zero octets in inbound positive ECDSA r/s mpints before normal cryptographic verification; preserve sign, value, algorithm order and host-key checks.",
+  "reference": "https://github.com/mscdex/ssh2/issues/1472"
+}

@@ -1,0 +1,17 @@
+node_modules/
+dist/
+analysis/
+test-artifacts/
+src/renderer/bundle.js
+assets/python-runtime/
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+
+assets/.python-runtime-*/

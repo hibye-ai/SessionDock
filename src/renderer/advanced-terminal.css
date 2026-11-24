@@ -1,0 +1,26 @@
+.advanced-terminal-modal { width: min(780px, calc(100vw - 40px)); max-height: calc(100vh - 60px); }
+.advanced-terminal-modal form { display: flex; flex-direction: column; max-height: inherit; }
+.advanced-terminal-body { display: flex; flex-direction: column; gap: 8px; overflow: auto; min-height: 0; }
+.advanced-terminal-modal .form-error { margin: 0; padding: 0 14px; }
+.keymap-rows, .automation-steps { display: flex; flex-direction: column; gap: 7px; }
+.keymap-row { display: grid; grid-template-columns: 36px 150px minmax(0, 1fr) auto; gap: 7px; align-items: center; }
+.keymap-row input { min-width: 0; }
+.keymap-row input[type="checkbox"] { width: auto; justify-self: start; }
+.keymap-rows[hidden], .keymap-inherited[hidden] { display: none; }
+.keymap-inherited { display: flex; flex-direction: column; gap: 7px; }
+.keymap-inherited code, .keymap-inherited span { overflow-wrap: anywhere; min-width: 0; }
+.keymap-headings { color: var(--muted); }
+.keymap-row-hint { grid-column: 2 / -1; color: var(--muted); }
+.disabled-fields { opacity: .5; pointer-events: none; }
+.automation-step { display: grid; grid-template-columns: 130px minmax(120px, 1fr) minmax(100px, 1fr) 85px auto; gap: 7px; padding: 7px; border: 1px solid var(--line); border-radius: var(--control-radius); background: var(--control-bg); align-items: end; }
+.automation-step:has([name=type] option[value=sendLine]:checked), .automation-step:has([name=type] option[value=waitFor]:checked), .automation-step:has([name=type] option[value=capture]:checked) { grid-template-columns: 130px minmax(150px, 1fr) 85px auto; }
+.automation-step:has([name=type] option[value=sleep]:checked) { grid-template-columns: 130px 85px auto; }
+.automation-step input,.automation-step select { width: 100%; min-width: 0; }
+.automation-tools,.command-library-tools { display: flex; align-items: center; gap: 7px; }
+.command-library-tools { margin-left: 14px; flex: 1; min-width: 0; }
+.command-library-tools input { width: 180px; min-width: 75px; height: 23px; }
+.command-library-tools select { max-width: 170px; height: 23px; }
+.automation-status { color: var(--accent); }
+@media(max-width:1050px){.keymap-row{grid-template-columns:36px 110px minmax(0,1fr) auto}.automation-step{grid-template-columns:110px minmax(100px,1fr) 85px auto}.automation-step:has([name=type] option[value=expectSend]:checked){grid-template-columns:110px 1fr 1fr 75px auto}.command-library-tools input{width:110px}}
+
+.terminal-tab.automation-running .tiny-dot { background: var(--accent); box-shadow: 0 0 0 2px var(--accent-bg); }

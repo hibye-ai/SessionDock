@@ -1,0 +1,146 @@
+{
+  "name": "sessiondock",
+  "productName": "SessionDock",
+  "version": "0.1.8",
+  "sessionDockReleaseNotes": "공식 웹 업데이트와 공유 세션 게시를 추가했습니다.\n장비 비밀번호는 저장하지 않고 연결할 때마다 입력합니다.",
+  "description": "Standalone Windows SSH2 and Telnet terminal and session manager.",
+  "author": "SessionDock",
+  "private": true,
+  "license": "MIT",
+  "main": "src/main.cjs",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build:renderer": "node scripts/patch-ssh2-legacy.cjs && node scripts/patch-xterm-webgl.cjs && node scripts/patch-xterm-work-budget.cjs && esbuild src/renderer/app.js --bundle --platform=browser --outfile=src/renderer/bundle.js --minify --legal-comments=eof",
+    "dev": "npm run build:renderer && electron .",
+    "test": "node --test --test-timeout=60000 tests/*.test.cjs",
+    "test:integration": "node scripts/integration-test.cjs",
+    "predist": "npm run build:renderer",
+    "dist": "node scripts/build-release.cjs",
+    "release:manifest": "node scripts/release-manifest.cjs",
+    "postinstall": "node scripts/patch-ssh2-legacy.cjs && node scripts/patch-xterm-webgl.cjs && node scripts/patch-xterm-work-budget.cjs"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-search": "^0.16.0",
+    "@xterm/addon-webgl": "0.19.0",
+    "@xterm/xterm": "^6.0.0",
+    "iconv-lite": "0.7.3",
+    "saxes": "^6.0.0",
+    "ssh2": "^1.17.0"
+  },
+  "devDependencies": {
+    "@electron/fuses": "1.8.0",
+    "electron": "44.9.3",
+    "electron-builder": "26.15.3",
+    "esbuild": "^0.25.0",
+    "playwright": "^1.56.0"
+  },
+  "build": {
+    "appId": "local.sessiondock.app",
+    "productName": "SessionDock",
+    "npmRebuild": false,
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "loadBrowserProcessSpecificV8Snapshot": false,
+      "grantFileProtocolExtraPrivileges": false
+    },
+    "artifactName": "SessionDock-${version}-${arch}.${ext}",
+    "afterPack": "./scripts/after-pack.cjs",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "LICENSE",
+      "package.json",
+      "node_modules/**/*",
+      "!src/renderer/app.js",
+      "!assets/python-runtime/**/*",
+      "!assets/automation/**/*",
+      "!node_modules/@xterm/*/lib/**/*",
+      "!node_modules/@xterm/*/src/**/*",
+      "!node_modules/@xterm/*/typings/**/*",
+      "!**/node_modules/nan/**",
+      "!**/node_modules/cpu-features/**",
+      "!**/node_modules/buildcheck/**",
+      "!node_modules/ssh2/.eslintignore",
+      "!node_modules/ssh2/.eslintrc.js",
+      "!node_modules/ssh2/SFTP.md",
+      "!node_modules/ssh2/install.js",
+      "!node_modules/ssh2/util/build_pagent.bat",
+      "!node_modules/ssh2/util/pagent.c",
+      "!node_modules/bcrypt-pbkdf/CONTRIBUTING.md",
+      "!node_modules/safer-buffer/Porting-Buffer.md",
+      "!node_modules/tweetnacl/PULL_REQUEST_TEMPLATE.md",
+      "!node_modules/saxes/saxes.js.map",
+      "!node_modules/xmlchars/xml/1.0/ed4.js.map",
+      "!node_modules/xmlchars/xml/1.0/ed5.js.map",
+      "!node_modules/xmlchars/xml/1.1/ed2.js.map",
+      "!node_modules/xmlchars/xmlchars.js.map",
+      "!node_modules/xmlchars/xmlns/1.0/ed3.js.map"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "signExecutable": true
+    },
+    "portable": {
+      "artifactName": "SessionDock-${version}-portable.exe"
+    },
+    "extraResources": [
+      {
+        "from": "assets/python-runtime",
+        "to": "python-runtime",
+        "filter": [
+          "**/*",
+          "!**/__pycache__{,/**/*}",
+          "!**/*.{pyc,pyo}"
+        ]
+      },
+      {
+        "from": "assets/automation",
+        "to": "automation",
+        "filter": [
+          "**/*",
+          "!release-trust.md",
+          "!**/__pycache__{,/**/*}",
+          "!**/*.{pyc,pyo}"
+        ]
+      }
+    ],
+    "electronLanguages": [
+      "en-US",
+      "ko"
+    ]
+  },
+  "overrides": {
+    "global-agent": "4.1.3",
+    "app-builder-lib@26.15.3": {
+      "minimatch@^10.2.5": "11.0.5",
+      "@electron/universal@2.0.3": {
+        "minimatch@^9.0.3": "11.0.5"
+      }
+    }
+  },
+  "allowScripts": {
+    "electron@44.9.3": true,
+    "esbuild@0.25.12": true,
+    "ssh2@1.17.0": true
+  }
+}

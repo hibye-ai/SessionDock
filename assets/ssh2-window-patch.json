@@ -1,0 +1,8 @@
+{
+  "dependency": "ssh2",
+  "version": "1.17.0",
+  "file": "node_modules/ssh2/lib/Channel.js",
+  "upstreamSha256": "53e92988a025009b192b72be110bd240b5653f88dbdec93e515e3e401e7f94aa",
+  "patchedSha256": "a5273db5afd8f0bcca205ff1c4804c8a9b7677052ec56336556b7206e240346a",
+  "reason": "Opt-in shell window=0; receive budget grants counted shared stdout/stderr wire credit; other channels unchanged."
+}

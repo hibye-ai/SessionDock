@@ -1,0 +1,9 @@
+{
+  "dependency": "saxes",
+  "version": "6.0.0",
+  "licenseFile": "assets/third-party/saxes-v6-LICENSE.txt",
+  "source": "https://raw.githubusercontent.com/lddubeau/saxes/v6.0.0/LICENSE",
+  "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
+  "bytes": 3011,
+  "notice": "Unmodified complete upstream v6.0.0 LICENSE including Contributors, Isaac Z. Schlueter and Contributors, and Mathias Bynens notices."
+}

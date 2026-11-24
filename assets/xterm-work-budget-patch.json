@@ -1,0 +1,11 @@
+{
+  "dependency": "@xterm/xterm",
+  "version": "6.0.0",
+  "reason": "CHT/CBT bounded by columns, IL/DL/SU/SD saturated by affected rows; REP exact codepoint work in 1024-codepoint slices with async parser backpressure and whole-print wide-cell boundaries. ECH and character shifts already geometry bounded. No numeric truncation or stream stripping.",
+  "files": [
+    {"file":"node_modules/@xterm/xterm/lib/xterm.js","upstreamSha256":"14903579ff54664cd72f8e8699e6961a6272c21863ec1c3b118cdc8af5d4a972","patchedSha256":"c1ae2447d55ccdc1a397cf10a71e4dd10e4bab745bb00287cbefd07d77779959"},
+    {"file":"node_modules/@xterm/xterm/lib/xterm.mjs","upstreamSha256":"b336ec65a086c056d4804b3d4c2347da5663d3f23c3f25be866467bd8857ad59","patchedSha256":"17eba2d4d59938c76836633640f1277e1e0958935777f1dfd77e029d07f6df56"},
+    {"file":"node_modules/@xterm/xterm/src/common/InputHandler.ts","upstreamSha256":"b03afd5d38dd708440699e81135f1735626d55ffdf24621fbd54cfbc41320925","patchedSha256":"ceb7d38254c2a7b79e72325e5bf73acc77083daa4dc787126904a1c8b75f929b"},
+    {"file":"node_modules/@xterm/xterm/src/common/Types.ts","upstreamSha256":"ad4fc729fa168148668992a00c80b8fa21a04061b5ce34a6a817c5c143319bec","patchedSha256":"bda1570986a890b37a6f790f25c903a96ade295ffadaa121b3f815b4b157c306"}
+  ]
+}

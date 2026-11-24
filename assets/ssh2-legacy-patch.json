@@ -1,0 +1,9 @@
+{
+  "dependency": "ssh2",
+  "version": "1.17.0",
+  "file": "node_modules/ssh2/lib/protocol/kex.js",
+  "upstreamSha256": "054ba4b81801596350f0e2e939746d2966297cffd4303b342c25b2fd5d295755",
+  "patchedSha256": "0e7643ffffacb1f9f33b8fe21e1aa657c88daeb11583997ca9625ce10bc06bc3",
+  "reason": "Electron named MODP group 2 fallback to the identical RFC 4253 8.1 explicit prime and generator; no global algorithm changes.",
+  "reference": "https://www.rfc-editor.org/rfc/rfc4253.html#section-8.1"
+}

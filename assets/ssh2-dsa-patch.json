@@ -1,0 +1,11 @@
+{
+  "dependency": "ssh2",
+  "version": "1.17.0",
+  "file": "node_modules/ssh2/lib/protocol/keyParser.js",
+  "upstreamSha256": "ba4f40a5a9edef15ff49a38226e2be2e66f75aa2673840dd18b807bb7943eca9",
+  "patchedSha256": "1c7fb605bbfb970b279562801689652eb7d54f938b5e4da699115d881f82e1f4",
+  "helper": "src/lib/dsa-host-key.cjs",
+  "helperSha256": "48ec57e132e6f5f01b7e79e3c2b3523e08aefdc759930787e78fc9af3b8494ed",
+  "reason": "Verify legacy DSS host signatures when native crypto lacks DSA; strict parameters and signature bounds; existing host trust remains mandatory.",
+  "reference": "https://www.rfc-editor.org/rfc/rfc4253.html#section-6.6"
+}

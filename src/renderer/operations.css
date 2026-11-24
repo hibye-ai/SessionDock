@@ -1,0 +1,123 @@
+/* Shared desktop variables keep these dialogs consistent in both themes. */
+.modal.operations-modal {
+  width: 790px;
+  max-width: calc(100vw - 40px);
+  height: min(600px, calc(100dvh - 45px));
+  max-height: calc(100dvh - 45px);
+  overflow: hidden;
+  text-align: left;
+}
+.operations-modal > form,
+.operations-modal .operations-controls {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.operations-modal > form { height: 100%; }
+.operations-modal .operations-controls { flex: 1; margin: 0; padding: 0; border: 0; }
+.operations-modal .modal-header,
+.operations-modal .modal-footer { flex-shrink: 0; }
+.operations-modal .modal-header { padding: 7px 12px; }
+.operations-modal .modal-header h2 { font-size: 14px; font-weight: 600; }
+.operations-modal .modal-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  padding: 10px 12px;
+  gap: 6px;
+}
+/* Footer order shared with the other dialogs:
+   [destructive / auxiliary] ……… [cancel or close] [primary]. */
+.operations-modal .modal-footer { justify-content: flex-end; padding: 7px 12px; gap: 6px; flex-wrap: wrap; }
+.operations-modal .modal-footer > .footer-start { margin-right: auto; }
+.operations-modal button:not(.icon-button) { justify-content: flex-start; text-align: left; }
+.operations-modal .modal-footer button:not(.icon-button) { justify-content: center; min-width: 64px; }
+.operations-danger { color: var(--danger); }
+.operations-modal .operations-danger.secondary-button { border-color: color-mix(in srgb, var(--danger) 50%, transparent); background: transparent; }
+.operations-modal .operations-danger.secondary-button:hover:not(:disabled) { background: var(--danger-bg); border-color: var(--danger); }
+.operations-modal [hidden] { display: none !important; }
+.operations-modal input[type="checkbox"] { accent-color: var(--accent); }
+.operations-modal label { min-width: 0; }
+.operations-modal :is(input, select, textarea):focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+.operations-content { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.operations-columns { display: grid; grid-template-columns: minmax(175px, 225px) minmax(0, 1fr); gap: 12px; align-items: start; }
+.operations-list-panel { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.operations-list-panel select { width: 100%; min-height: 220px; padding: 4px; border-radius: var(--control-radius); }
+.operations-list-panel option { padding: 4px 6px; overflow: hidden; text-overflow: ellipsis; }
+.operations-editor { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.operations-editor > label { flex-shrink: 0; }
+.operations-editor input { width: 100%; }
+.operations-editor .check-label input { width: 13px; flex: 0 0 13px; }
+.operations-toolbar { display: flex; flex-wrap: wrap; gap: 5px; align-items: flex-start; }
+.operations-toolbar button { min-height: 26px; padding: 4px 8px; }
+.operations-status { color: var(--subtle); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.operations-status:empty { display: none; }
+.operations-error { flex-shrink: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.operations-error:not(:empty) { position: sticky; top: 0; z-index: 1; padding: 4px 0; background: var(--panel); }
+.operations-metadata,
+.operations-usage { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+/* Credential field actions stay adjacent without competing with input labels. */
+.operations-credentials .operations-columns { grid-template-columns: minmax(230px, 42%) minmax(0, 1fr); }
+.operations-credential-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex-shrink: 0; }
+.operations-credential-field > label { color: var(--muted); font-size: 12px; }
+.operations-input-action { display: flex; align-items: stretch; gap: 5px; min-width: 0; }
+.operations-input-action > input { flex: 1; min-width: 0; width: 0; }
+.operations-input-action > button { flex-shrink: 0; min-width: 48px; white-space: nowrap; }
+.operations-input-action > button[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-bg); }
+/* Secret fields overlay the eye toggle so it cannot widen or shift the row. */
+.operations-secret-field .operations-input-action { position: relative; }
+.operations-secret-field .operations-input-action > input { padding-right: 32px; }
+.operations-secret-field .operations-input-action > button.password-toggle-button { position: absolute; top: 50%; right: 2px; transform: translateY(-50%); flex: 0 0 auto; min-width: 26px; width: 26px; height: 26px; padding: 0; border: 0; background: transparent; white-space: normal; }
+.operations-secret-field .operations-input-action > button.password-toggle-button:hover:not(:disabled) { color: var(--accent); background: var(--hover); }
+.operations-secret-field .operations-input-action > button.password-toggle-button[aria-pressed="true"] { color: var(--accent); background: transparent; border: 0; }
+.operations-secret-field .operations-input-action > button.password-toggle-button:disabled { opacity: .42; }
+.operations-secret-field .operations-input-action > button.password-toggle-button svg { width: 15px; height: 15px; pointer-events: none; }
+.operations-credentials button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.operations-credentials :is(.operations-metadata, .operations-usage) { border-top: 1px solid var(--line); padding-top: 8px; }
+.operations-credentials :is(.operations-metadata, .operations-usage) h3 { margin: 0 0 6px; color: var(--text); font-size: 12px; font-weight: 600; }
+.operations-secret-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.operations-secret-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 7px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--control-bg); line-height: 1.4; }
+.operations-secret-badge::before { content: ''; width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; flex-shrink: 0; }
+.operations-secret-badge.is-stored { color: var(--success); border-color: color-mix(in srgb, var(--success) 45%, var(--line)); background: color-mix(in srgb, var(--success) 9%, var(--panel)); }
+.operations-secret-badge.is-stored::before { background: currentColor; }
+.operations-usage-summary { margin: 0; line-height: 1.6; color: var(--muted); }
+.operations-names { margin: 4px 0; padding-left: 18px; color: var(--muted); font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+.operations-selection > strong { font-size: 11px; font-weight: 500; }
+.operations-selection .operations-names { columns: 2; column-gap: 18px; }
+.operations-selection li { break-inside: avoid; }
+.operations-bulk-fields { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 8px; }
+.operations-bulk-row { display: grid; grid-template-columns: 175px minmax(0, 1fr); gap: 10px; align-items: start; }
+.operations-bulk-row > .check-label { min-height: 26px; }
+.operations-bulk-value { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.operations-bulk-value > :is(input, select) { width: 100%; }
+.operations-bulk-value > :disabled { opacity: .55; }
+.operations-preview { border-top: 1px solid var(--line); padding-top: 8px; overflow-wrap: anywhere; }
+.operations-preview h3 { font-size: 12px; font-weight: 500; margin: 0 0 6px; }
+.operations-changes { display: grid; grid-template-columns: minmax(100px, 145px) minmax(0, 1fr); gap: 4px 10px; margin: 6px 0; font-size: 11px; }
+.operations-changes dt { color: var(--muted); }
+.operations-changes dd { margin: 0; }
+.operations-preview-session { padding: 5px 0; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.6; }
+.operations-preview-session strong { font-weight: 500; }
+.operations-preview-session > div { color: var(--muted); }
+.operations-workspace-details { border-top: 1px solid var(--line); padding-top: 7px; }
+.modal.operations-confirm { width: 480px; height: fit-content; }
+.operations-confirm > form { height: auto; }
+.operations-confirm .operations-controls { flex: 0 1 auto; }
+.operations-confirm .modal-body { max-height: calc(100dvh - 155px); }
+.operations-confirm-text { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); font-size: 12px; line-height: 1.7; }
+@media (max-width: 640px) {
+  .modal.operations-modal { max-width: calc(100vw - 20px); }
+  .operations-columns { grid-template-columns: minmax(125px, 35%) minmax(0, 1fr); gap: 8px; }
+  .operations-credentials .operations-columns { grid-template-columns: minmax(0, 1fr); }
+  .operations-credentials .operations-list-panel select { min-height: 90px; height: 110px; }
+  .operations-toolbar button { white-space: normal; }
+  .operations-bulk-row { grid-template-columns: 150px minmax(0, 1fr); gap: 6px; }
+  .operations-selection .operations-names { columns: 1; }
+}
+@media (max-width: 430px) {
+  .operations-columns { grid-template-columns: minmax(0, 1fr); }
+  .operations-list-panel select { min-height: 90px; height: 100px; }
+  .operations-bulk-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}

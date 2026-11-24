@@ -1,0 +1,6 @@
+'use strict';
+function sshCompatibility(value='standard') {if(!['standard','smartnetwork','compatible','legacy'].includes(value))throw new Error('SSH 호환성 설정이 올바르지 않습니다.');return value;}
+function isAlgorithmMismatch(error){return error?.level==='handshake'&&/^Handshake failed: no matching (?:key exchange algorithm|host key format|[CS]->[CS] (?:cipher|MAC))$/.test(error.message||'');}
+function algorithms(value){const mode=sshCompatibility(value);if(mode==='standard')return undefined;return {kex:{append:['diffie-hellman-group14-sha1','diffie-hellman-group-exchange-sha1','diffie-hellman-group1-sha1']},cipher:{append:['aes128-cbc','aes192-cbc','aes256-cbc','3des-cbc']},hmac:{append:['hmac-md5','hmac-sha1-96','hmac-md5-96']},...(['compatible','legacy'].includes(mode)?{serverHostKey:{append:['ssh-dss']}}:{})};}
+function negotiated(info){const result={};if(typeof info?.kex==='string')result.kex=info.kex.slice(0,100);const hostKey=info?.serverHostKey??info?.srvHostKey;if(typeof hostKey==='string')result.srvHostKey=hostKey.slice(0,100);for(const direction of ['cs','sc']){result[direction]={};for(const name of ['cipher','mac'])if(typeof info?.[direction]?.[name]==='string')result[direction][name]=info[direction][name].slice(0,100);}return result;}
+module.exports={sshCompatibility,algorithms,negotiated,isAlgorithmMismatch};

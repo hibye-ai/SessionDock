@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <link rel="stylesheet" href="font-picker.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>SessionDock</title>
+  <link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+  <link rel="stylesheet" href="desktop.css">
+  <link rel="stylesheet" href="operations.css">
+  <link rel="stylesheet" href="advanced-terminal.css">
+  <link rel="stylesheet" href="batch.css">
+</head>
+<body>
+  <div id="app">
+    <header class="titlebar">
+      <div class="brand"><span data-icon="terminal"></span><span>SessionDock — <span id="workspace-name">시작</span></span></div>
+      <div class="window-controls">
+        <button type="button" data-window="minimize" aria-label="최소화" title="최소화"><svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M0 5.5h10"/></svg></button>
+        <button type="button" data-window="maximize" aria-label="최대화" title="최대화"><svg class="window-glyph-maximize" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><rect x=".5" y=".5" width="9" height="9"/></svg><svg class="window-glyph-restore" viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="M2.5 2.5v-2h7v7h-2"/><rect x=".5" y="2.5" width="7" height="7"/></svg></button>
+        <button type="button" data-window="close" aria-label="닫기" title="닫기"><svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path d="m.5.5 9 9m0-9-9 9"/></svg></button>
+      </div>
+    </header>
+    <nav class="menubar" aria-label="프로그램 메뉴">
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">파일(F)</button><div class="menu-popup hidden"><button id="toolbar-new" data-command="toolbar-new">새 세션<span>Alt+N</span></button><button data-command="new-folder">새 폴더…</button><button data-command="quick-connect">빠른 연결<span>Alt+D</span></button><hr><button data-command="exit">종료</button></div></div>
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">편집(E)</button><div class="menu-popup hidden"><button id="edit-selected" data-command="edit-selected">세션 속성…</button><button data-command="bulk-settings">선택 세션 일괄 설정…</button><hr><button data-command="copy-terminal">터미널 복사<span>Ctrl+Shift+C</span></button><button data-command="paste-terminal">터미널 붙여넣기<span>Ctrl+Shift+V</span></button><button data-command="terminal-search">터미널 찾기<span>Ctrl+Shift+F</span></button><hr><button data-command="select-all-terminal">전체 선택</button><button data-command="clear-terminal">모두 지우기</button></div></div>
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">보기(V)</button><div class="menu-popup hidden"><button data-command="toggle-sidebar">세션 관리자 표시 / 숨기기</button><button id="nav-snippets" data-command="nav-snippets">버튼 바 표시 / 숨기기</button><button data-command="toggle-command">명령 창 표시 / 숨기기</button><hr><button data-command="split-columns">세로 탭 분할 (좌우)</button><button data-command="split-rows">가로 탭 분할 (위아래)</button><button data-command="split-off">일반 탭 보기</button><button data-command="toggle-files">SFTP 파일 탐색기</button></div></div>
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">연결(C)</button><div class="menu-popup hidden"><button id="connect-selected" data-command="connect-selected">선택한 세션 연결</button><button id="disconnect-active" data-command="disconnect-active">현재 연결 종료</button><button id="reconnect-active" data-command="reconnect-active">현재 세션 재접속</button><button data-command="clone-active">현재 세션 복제</button><hr><button data-command="disconnect-all">모든 연결 종료</button></div></div>
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">도구(T)</button><div class="menu-popup hidden"><button data-command="open-settings">전체 설정…</button><button data-command="credentials">공통 계정 관리…</button><button data-command="keymap">키 매핑…</button><hr><button data-command="batch-run">장비 일괄 실행…</button><button data-command="automation">명령 자동화…</button><button data-command="python-script">Python 스크립트 실행…</button><button data-command="cancel-automation">현재 탭 자동화 중지</button><hr><button data-command="new-snippet">버튼 바 명령 추가…</button><button id="toggle-log" data-command="toggle-log">세션 로그 저장 / 중지</button><button id="open-logs" data-command="open-logs">로그 폴더 열기</button><hr><button data-command="save-workspace">현재 작업공간 저장</button><button data-command="restore-workspace">저장한 작업공간 열기</button><button data-command="named-workspaces">작업공간 관리…</button><button data-command="clear-command-history">현재 탭 명령 이력 지우기</button></div></div>
+      <div class="menu"><button class="menu-trigger" aria-expanded="false">도움말(H)</button><div class="menu-popup hidden"><button data-command="shortcuts">키보드 단축키</button></div></div>
+    </nav>
+
+    <form id="connection-bar" class="connection-bar" aria-label="빠른 연결 주소 바">
+      <span class="connection-bar-label" aria-hidden="true"><span data-icon="terminal"></span><span class="connection-bar-caption">빠른 연결</span></span>
+      <div class="connection-field"><select id="connection-protocol" aria-label="빠른 연결 프로토콜" title="자동: 포트/스킴 감지 · SSH 포트 닫힘 시 Telnet 자동 전환"><option value="auto">자동</option><option value="ssh">SSH</option><option value="telnet">Telnet</option></select>
+      <div class="connection-address-wrap"><span class="address-icon" aria-hidden="true" data-icon="search"></span><input id="connection-address" aria-label="빠른 연결 주소" placeholder="장비 이름 또는 IP 주소 검색 · 새 주소는 자동 연결" autocomplete="off" spellcheck="false" maxlength="1024" role="combobox" aria-autocomplete="list" aria-controls="address-options" aria-expanded="false"><kbd>Enter</kbd><div id="address-suggestions" class="address-suggestions hidden"><div id="address-options" role="listbox" aria-label="일치하는 등록 세션"></div><div id="address-match-status" class="address-match-status" role="status"></div></div></div>
+      <button id="address-connect" type="submit" class="connect-button" title="연결: Enter · 직접 연결: Shift+Enter" aria-label="연결"><span data-icon="play"></span>연결</button>
+      </div>
+      <button id="quick-options" type="button" class="icon-button" title="빠른 연결 상세 설정" aria-label="빠른 연결 상세 설정"><span data-icon="sliders"></span></button>
+      <button id="open-settings" type="button" class="icon-button" title="전체 설정" aria-label="전체 설정"><span data-icon="settings"></span></button>
+    </form>
+
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="dock-heading sidebar-header"><button id="nav-sessions" class="active"><span data-icon="server"></span><span id="sidebar-title">세션</span><span id="session-count">0</span></button><div class="sidebar-header-tools"><button class="icon-button" id="new-session" title="새 세션" aria-label="새 세션"><span data-icon="plus"></span></button><button class="icon-button" id="tree-connect" title="선택한 세션 연결" aria-label="선택한 세션 연결"><span data-icon="play"></span></button><button class="icon-button" id="tree-edit" title="세션 속성" aria-label="세션 속성"><span data-icon="edit"></span></button><span class="tool-separator"></span><button class="icon-button" id="collapse-folders" title="모든 폴더 접기" aria-label="모든 폴더 접기"><span data-icon="collapse"></span></button><button class="icon-button" id="hide-sidebar" title="세션 관리자 숨기기" aria-label="세션 관리자 숨기기"><span data-icon="close"></span></button></div></div>
+        <div class="search-box"><span data-icon="search"></span><input id="session-search" placeholder="이름·호스트·태그 검색" aria-label="세션 검색"><kbd>Ctrl K</kbd></div>
+        <div class="filter-tabs"><button id="filter-all" class="selected">전체</button><button id="filter-favorite">즐겨찾기</button><button id="filter-online">연결됨 <span id="online-count">0</span></button></div>
+        <div id="session-list" class="session-list" role="tree" aria-label="저장된 세션" aria-multiselectable="true"></div>
+        <div class="session-properties"><div class="dock-heading">세션 정보</div><dl id="session-properties"><dt>프로토콜</dt><dd>—</dd><dt>호스트</dt><dd>세션을 선택하세요</dd></dl></div>
+      </aside>
+      <div id="sidebar-resizer" class="sidebar-resizer" role="separator" aria-label="세션 관리자 너비" aria-orientation="vertical" tabindex="0"></div>
+      <main class="main">
+        <div id="tabbar" class="tabbar hidden"><div id="tabs" class="tabs" role="tablist" aria-label="열린 세션"></div><div class="tab-tools"><button class="icon-button" id="terminal-search" title="터미널 찾기 (Ctrl+Shift+F)" aria-label="터미널 찾기"><span data-icon="search"></span></button><button class="icon-button" id="toggle-files" title="SFTP 파일 탐색기 · SSH 전용" aria-label="SFTP 파일 탐색기"><span data-icon="folder"></span></button><button class="icon-button" id="toggle-split" title="탭 분할 방식 선택" aria-label="탭 분할 방식 선택" aria-haspopup="menu"><span data-icon="split"></span></button><span class="tool-separator"></span><button class="icon-button" id="tab-scroll-left" title="이전 탭 보기" aria-label="이전 탭 보기">‹</button><button class="icon-button" id="tab-scroll-right" title="다음 탭 보기" aria-label="다음 탭 보기">›</button><button class="icon-button" id="tab-list" title="열린 세션 목록" aria-label="열린 세션 목록"><span data-icon="chevron"></span></button><button class="icon-button" id="tab-new" title="새 연결 (Alt+D)" aria-label="새 연결"><span data-icon="plus"></span></button></div></div>
+
+        <section id="empty-workspace" class="empty-workspace" aria-label="빈 터미널 작업 영역"><p>왼쪽 목록에서 세션을 연결하거나, 위쪽 주소 창에 IP를 입력하고 Enter를 누르세요.</p></section>
+        <section id="terminal-workspace" class="terminal-workspace hidden"><div id="terminal-search-box" class="terminal-search-box hidden"><input id="terminal-search-input" maxlength="256" placeholder="터미널에서 찾기" aria-label="터미널 검색어"><button id="search-case" class="icon-button search-option" aria-label="대소문자 구분" title="대소문자 구분" aria-pressed="false">Aa</button><button id="search-word" class="icon-button search-option" aria-label="단어 단위" title="단어 단위" aria-pressed="false">ab</button><button id="search-regex" class="icon-button search-option" aria-label="정규식" title="정규식" aria-pressed="false">.*</button><output id="search-result" aria-live="polite"></output><button id="find-previous" class="icon-button" aria-label="이전 결과" title="이전 결과 · Shift+F3">↑</button><button id="find-next" class="icon-button" aria-label="다음 결과" title="다음 결과 · F3">↓</button><button id="close-terminal-search" class="icon-button" aria-label="검색 닫기" title="검색 닫기"><span data-icon="close"></span></button></div><div id="terminal-panes" class="terminal-panes"></div><aside id="file-panel" class="file-panel hidden"><div class="file-panel-header"><strong><span data-icon="folder"></span> SFTP</strong><button class="icon-button" id="close-files" aria-label="SFTP 패널 닫기" title="SFTP 패널 닫기"><span data-icon="close"></span></button></div><form id="remote-path-form" class="remote-path-form"><input id="remote-path" value="." aria-label="원격 경로"><button class="icon-button" title="이동" aria-label="경로 이동">→</button></form><div class="file-tools"><button class="text-button" id="remote-parent">↑ 상위 폴더</button><button class="icon-button" id="remote-refresh" title="새로고침" aria-label="새로고침"><span data-icon="refresh"></span></button><button class="text-button" id="remote-upload"><span data-icon="upload"></span> 업로드</button></div><div id="remote-files" class="remote-files"></div><div id="transfer-status" class="transfer-status">파일을 두 번 클릭하면 다운로드합니다.</div></aside></section>
+        <section id="snippet-page" class="snippet-page hidden"><div class="dock-heading"><strong>버튼 바 · 저장된 명령</strong><div class="command-library-tools"><input id="snippet-search" placeholder="저장 명령 검색" aria-label="저장 명령 검색"><select id="snippet-folder-filter" aria-label="명령 폴더"><option value="">모든 폴더</option></select></div><span class="flex-spacer"></span><button class="text-button" id="new-snippet"><span data-icon="plus"></span> 추가</button><button class="icon-button" id="close-snippets" aria-label="버튼 바 닫기" title="버튼 바 닫기"><span data-icon="close"></span></button></div><div id="snippet-list" class="snippet-list"></div></section>
+        <div id="command-bar" class="command-bar" role="region" aria-label="명령 창"><div class="command-sender"><div class="command-field"><span class="command-prompt" aria-hidden="true">&gt;</span><input id="command-input" placeholder="명령 입력 · Enter로 전송" aria-label="보낼 명령어" aria-describedby="command-target-label command-shortcuts"></div><label class="command-private-toggle" title="암호·토큰 입력 전에 켜세요. 입력을 가리고 이력·추천에서 제외하며 현재 세션에만 보냅니다. 자동 감지는 모든 암호를 찾지 못합니다."><input type="checkbox" id="command-sensitive">민감 입력</label><span id="command-target-label" class="hidden" role="status">현재 세션으로 전송</span><span class="command-target-caption" aria-hidden="true">대상</span><select id="command-target" aria-label="명령어 대상"><option value="active">현재 세션</option><option value="all">연결된 모든 세션</option><option value="selected">선택한 탭 그룹</option></select><button class="secondary-button small" id="send-command">전송 <span data-icon="arrow"></span></button><button class="icon-button" id="close-command" title="명령 창 닫기" aria-label="명령 창 닫기"><span data-icon="close"></span></button></div><span id="command-shortcuts" class="command-shortcuts">↑↓ 이력 · Ctrl+Space 추천</span></div>
+        <footer class="statusbar"><div><span class="tiny-dot" id="status-dot"></span><span id="status-text">준비됨</span><button type="button" id="status-detail" class="status-detail hidden" aria-label="연결 상태 자세히 보기" title="연결 상태 자세히 보기">자세히</button><span id="status-protocol-divider" class="status-divider hidden"></span><span id="status-protocol" class="hidden"></span><span id="status-gutter" class="hidden"></span></div><div><span id="connection-counter" class="connection-counter">0개 연결</span><span id="status-terminal">UTF-8</span><span class="status-divider"></span><span class="status-brand">SessionDock <span id="app-version">0.1.0</span></span></div></footer>
+      </main>
+    </div>
+  </div>
+  <dialog id="update-notice-dialog" class="modal compact-modal" aria-labelledby="update-notice-title">
+    <div class="modal-header"><h2 id="update-notice-title">업데이트</h2><button type="button" id="update-notice-close" class="icon-button" aria-label="닫기"><span data-icon="close"></span></button></div>
+    <div class="modal-body"><p id="update-notice-message"></p><p id="update-notice-notes" class="hidden" tabindex="0"></p><label class="check-label"><input id="update-notice-snooze" type="checkbox"> 다음 주까지 알림 띄우지 않기</label><p id="update-notice-error" class="form-error" role="alert"></p></div>
+    <div class="modal-footer"><button type="button" id="update-notice-cancel" class="secondary-button">취소</button><button type="button" id="update-notice-install" class="primary-button">업데이트</button></div>
+  </dialog>
+  <dialog id="update-progress-dialog" class="modal compact-modal update-progress-dialog" aria-labelledby="update-progress-title" aria-describedby="update-progress-status">
+    <div class="modal-header"><h2 id="update-progress-title">업데이트 준비</h2></div>
+    <div class="modal-body"><p id="update-progress-status" role="status" aria-live="polite">준비 중…</p><progress id="update-progress-bar" max="100" aria-label="현재 단계 진행률"></progress><p id="update-progress-detail"></p></div>
+  </dialog>
+  <dialog id="session-dialog" class="modal session-modal">
+    <form id="session-form">
+      <div class="modal-header"><h2 id="session-dialog-title">새 세션</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div>
+      <div class="session-options-layout">
+        <nav class="session-categories" aria-label="세션 설정 분류">
+          <button type="button" data-session-page="connection" class="selected"><span data-icon="zap"></span>연결</button>
+          <button type="button" data-session-page="terminal"><span data-icon="terminal"></span>터미널</button>
+          <button type="button" data-session-page="reconnect"><span data-icon="activity"></span>재접속 및 로그</button>
+        </nav>
+        <div class="modal-body session-options-body">
+          <section data-session-panel="connection">
+            <div class="form-row" id="session-identity"><label>세션 이름<input name="name" required maxlength="100" placeholder="예시 세션 1"></label><label>폴더<input name="folder" list="session-folder-options" maxlength="1024" placeholder="예시 폴더 1/예시 폴더 2"><datalist id="session-folder-options"></datalist></label></div>
+            <label>프로토콜<select name="protocol" id="session-protocol"><option value="ssh">SSH2</option><option value="telnet">Telnet</option></select></label>
+            <div class="form-row host-row"><label>호스트 / IP<input name="host" required maxlength="253" placeholder="server.example.com"></label><label>포트<input name="port" type="number" min="1" max="65535" value="22" required aria-describedby="session-port-hint"></label></div>
+            <div id="session-port-hint" class="field-hint hidden" role="status"><span></span> <button type="button" id="session-port-undo" class="text-button"></button></div>
+            <div id="ssh-auth-fields"><label>공통 계정<div class="input-with-button"><select name="credentialId" id="session-credential"><option value="">이 세션에 입력한 계정 사용</option></select><button type="button" id="manage-session-credentials" class="secondary-button">관리…</button></div></label>
+              <div class="form-row"><label>사용자 이름<input name="username" maxlength="128" placeholder="비워 두면 연결할 때 입력"></label><label>인증 방식<select name="authType"><option value="password">비밀번호</option><option value="key">개인키 파일</option><option value="agent">SSH 에이전트</option></select></label></div>
+              <p id="password-fields" class="field-hint">비밀번호는 연결할 때 입력합니다.</p>
+              <div id="key-fields" class="hidden"><label>개인키 경로<div class="input-with-button"><input name="privateKeyPath" placeholder="개인키 파일 경로"><button type="button" class="secondary-button" id="browse-key">찾아보기</button></div></label><label>개인키 암호<div class="input-password-wrapper"><input name="passphrase" type="password" autocomplete="new-password"><button type="button" class="password-toggle-button" aria-label="개인키 암호 보기" title="개인키 암호 보기"></button></div></label></div>
+              <div id="agent-fields" class="hidden"><label>에이전트 경로<input name="agentPath" placeholder="비워 두면 Windows OpenSSH 에이전트 사용"></label></div>
+            </div>
+            <div id="telnet-fields" class="hidden"><p class="field-hint">Telnet은 암호화되지 않으며 로그인은 연결 후 터미널에서 입력합니다.</p><div class="form-row"><label>Enter 전송<select name="telnetEnter"><option value="cr">CR + NUL (기본 · PuTTY 방식)</option><option value="crlf">CR + LF</option></select></label><label class="check-label"><input name="localEcho" type="checkbox"> 로컬 에코</label></div></div>
+            <div class="form-checks"><label class="check-label" id="remember-credentials"><input name="rememberPassphrase" type="checkbox"> 개인키 암호 저장 (암호화)</label><label class="check-label" id="favorite-field"><input name="favorite" type="checkbox"> 즐겨찾기</label></div>
+            <label id="quick-save-field" class="check-label hidden"><input name="saveQuickSession" type="checkbox"> 세션 목록에 저장</label>
+            <details class="advanced-settings"><summary>고급 설정 <span data-icon="chevron"></span></summary><div class="advanced-body">
+              <div class="form-row" id="ssh-jump-fields"><label>점프 서버<select name="jumpSessionId" id="jump-session"><option value="">직접 연결</option></select></label><label>Keepalive 간격 (초)<input name="keepaliveInterval" type="number" min="0" max="3600" value="30"></label></div>
+              <label id="ssh-timeout-field">SSH 연결 제한 시간 (초)<input name="handshakeTimeout" type="number" min="5" max="300" value="30" placeholder="기본 30초"></label><p class="field-hint" id="ssh-timeout-hint">이 시간 안에 SSH 협상이 끝나지 않으면 연결 시간 초과로 표시됩니다.</p>
+              <label>태그 (쉼표로 구분)<input name="tags" placeholder="예시 태그 1, 예시 태그 2"></label><label>메모<textarea name="notes" rows="2" maxlength="2000"></textarea></label>
+              <div id="ssh-forward-fields"><div class="forward-heading"><strong>로컬 포트 포워딩</strong><button type="button" id="add-forward" class="text-button">+ 추가</button></div><div id="forward-list"></div><p class="field-hint">이 PC의 127.0.0.1 또는 ::1 주소에서만 수신합니다.</p></div>
+              <label id="clear-secrets-label" class="check-label hidden"><input name="clearPassphrase" type="checkbox"> 저장된 개인키 암호 삭제</label>
+            </div></details>
+          </section>
+          <section data-session-panel="terminal" class="hidden">
+            <h3>터미널 에뮬레이션</h3><label>터미널 타입<select name="terminalType"><option value="xterm-256color">xterm-256color</option><option value="xterm">xterm</option><option value="vt100">VT100</option><option value="vt220">VT220</option><option value="ansi">ANSI</option><option value="linux">Linux</option></select></label>
+            <label>문자 인코딩<select name="encoding"><option value="utf-8">UTF-8</option><option value="cp949">한국어 CP949</option><option value="euc-kr">한국어 EUC-KR</option><option value="shift_jis">일본어 Shift_JIS</option><option value="gb18030">중국어 GB18030</option><option value="big5">중국어 Big5</option></select></label><p class="field-hint">인코딩 변경은 다음 연결부터 적용됩니다.</p>
+            <div id="ssh-ctrl-arrow-field"><label>Ctrl+방향키 단어 이동<select name="ctrlArrowMode"><option value="word">일반 SSH 단어 이동 (ESC b/f)</option><option value="native">기존 키코드 전송 (xterm)</option></select></label><p class="field-hint">Ctrl+←/→에 적용하며 사용자 키 매핑이 우선합니다. 대체 화면·application 키·마우스 모드에서는 기존 키코드를 보냅니다.</p></div>
+            <h3>글꼴과 간격</h3>
+            <label>글꼴<input name="fontFamily" list="terminal-font-families" maxlength="128" placeholder="전체 설정의 글꼴 사용" autocomplete="off"></label>
+            <p class="field-hint system-font-status">설치된 글꼴을 불러옵니다. 고정폭 글꼴을 권장합니다.</p>
+            <div class="form-row"><label>글자 크기 (px)<input name="fontSize" type="number" min="0" max="48" value="0"></label><label>글꼴 굵기<select name="fontWeight"><option value="">전체 설정 사용</option><option value="normal">보통</option><option value="bold">굵게</option></select></label></div>
+            <div class="form-row"><label>줄 간격 (배율)<input name="lineHeight" type="number" min="0" max="2" step="0.05" value="0"></label><label>글자 간격 (px)<input name="letterSpacing" type="number" min="-1" max="5" step="0.1" value="-1"></label></div>
+            <button type="button" id="session-font-defaults" class="secondary-button small"><span data-icon="refresh"></span>전체 설정 글꼴로 되돌리기</button>
+            <p class="field-hint">글꼴을 비우거나 크기·줄 간격 0, 글자 간격 -1이면 전체 설정을 따릅니다. 직접 지정: 크기 10–48px, 줄 간격 1–2배, 글자 간격 0–5px. 저장 즉시 적용됩니다.</p>
+            <label>스크롤백 줄 수<input name="scrollback" type="number" min="0" max="100000" value="0"></label><p class="field-hint">0이면 전체 설정을 따릅니다(직접 지정: 1,000–100,000줄).</p>
+            <div class="form-row"><label>커서 모양<select name="cursorStyle"><option value="bar">세로 막대</option><option value="block">블록</option><option value="underline">밑줄</option></select></label><label>Backspace 전송<select name="backspace"><option value="del">DEL (0x7F)</option><option value="bs">BS (0x08)</option></select></label></div><label class="check-label"><input name="cursorBlink" type="checkbox" checked> 커서 깜빡임</label>
+            <div class="terminal-preview" aria-label="터미널 설정 미리보기">user@server:~$ ls -al <span id="cursor-preview">▏</span><br>한글 출력 · 0O 1Il [] {} →<br><strong>굵은 글씨 Bold · 연결 정상</strong></div>
+          </section>
+          <section data-session-panel="reconnect" class="hidden">
+            <h3>연결 유지</h3><label class="check-label"><input name="autoReconnect" type="checkbox"> 연결이 끊어지면 자동 재접속</label><div class="form-row"><label>재접속 대기 시간 (초)<input name="reconnectDelay" type="number" min="1" max="300" value="5"></label><label>최대 시도 횟수<input name="reconnectAttempts" type="number" min="1" max="10" value="1"></label></div><p class="field-hint">연결 후 예기치 않은 종료나 네트워크 오류에 재접속합니다. 직접 종료·인증 실패·취소·호스트 키 변경 시 중지하며 Telnet은 다시 로그인해야 합니다.</p>
+            <h3>세션 로그</h3><label class="check-label"><input name="logEnabled" type="checkbox"> 연결 시 로그 저장</label>
+          </section>
+          <div id="import-warnings" class="form-warning hidden"></div><div id="session-form-error" class="form-error" role="alert"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button type="button" id="delete-session" class="secondary-button danger-button hidden">세션 삭제…</button><span class="flex-spacer"></span><button type="button" class="secondary-button modal-close">취소</button><button type="submit" class="primary-button" id="save-session">세션 저장</button></div>
+    </form>
+  </dialog>
+  <dialog id="remote-name-dialog" class="modal compact-modal"><form id="remote-name-form"><div class="modal-header"><h2 id="remote-name-title">새 원격 폴더</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><label>이름<input id="remote-name-input" required maxlength="255" autocomplete="off"></label><p id="remote-name-error" class="form-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="secondary-button modal-close">취소</button><button type="submit" class="primary-button">저장</button></div></form></dialog>
+  <dialog id="folder-dialog" class="modal compact-modal"><form id="folder-form"><div class="modal-header"><h2 id="folder-dialog-title">새 폴더</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><label>상위 폴더<select name="parent" aria-label="상위 폴더"></select></label><label>폴더 이름<input name="name" required maxlength="256" autocomplete="off"></label><p class="form-error" id="folder-form-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="secondary-button modal-close">취소</button><button type="submit" class="primary-button">저장</button></div></form></dialog>
+  <dialog id="move-session-dialog" class="modal compact-modal"><form id="move-session-form"><div class="modal-header"><h2>세션 이동</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><p id="move-session-name"></p><label>대상 폴더<select name="folder" aria-label="대상 폴더"></select></label><p class="form-error" id="move-session-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="secondary-button modal-close">취소</button><button type="submit" class="primary-button">이동</button></div></form></dialog>
+  <dialog id="rename-session-dialog" class="modal compact-modal"><form id="rename-session-form"><div class="modal-header"><h2>세션 이름 변경</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><label>세션 이름<input name="name" required maxlength="256" autocomplete="off"></label><p class="form-error" id="rename-session-error" role="alert"></p></div><div class="modal-footer"><button type="button" class="secondary-button modal-close">취소</button><button type="submit" class="primary-button">저장</button></div></form></dialog>
+  <dialog id="folder-publish-dialog" class="modal folder-publish-modal" aria-labelledby="folder-publish-title"><div class="modal-header"><h2 id="folder-publish-title">공유 세션 게시</h2><button type="button" id="folder-publish-close" class="icon-button" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><p id="folder-publish-summary" class="folder-publish-summary"></p><p class="field-hint">비밀번호·개인키·계정 등 개인 설정은 제외합니다. 저장한 파일은 공유 목록에 자동 등록되지 않습니다.</p><div class="folder-publish-scroll" tabindex="0" role="region" aria-label="게시 세션 미리보기"><table><thead><tr><th>폴더</th><th>이름</th><th>호스트</th><th>프로토콜</th><th>포트</th></tr></thead><tbody id="folder-publish-rows"></tbody></table></div><p id="folder-publish-more" class="field-hint hidden"></p><p class="form-error" id="folder-publish-error" role="alert"></p></div><div class="modal-footer"><button type="button" id="folder-publish-cancel" class="secondary-button">취소</button><button type="button" id="folder-publish-confirm" class="primary-button">JSON 저장…</button></div></dialog>
+  <dialog id="prompt-dialog" class="modal prompt-modal" aria-labelledby="prompt-title" aria-describedby="prompt-body"><form id="prompt-form"><div class="modal-header"><div><span class="eyebrow" id="prompt-eyebrow">SSH 인증</span><h2 id="prompt-title">인증</h2></div></div><div class="modal-body" id="prompt-body"></div><div class="modal-footer"><button type="button" id="prompt-cancel" class="secondary-button">취소</button><button type="submit" id="prompt-submit" class="primary-button">확인</button></div></form></dialog>
+  <dialog id="settings-dialog" class="modal settings-modal"><form id="settings-form">
+    <div class="modal-header"><h2>전체 설정</h2><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div>
+    <div class="session-options-layout">
+      <nav class="session-categories" aria-label="전체 설정 분류"><button type="button" data-settings-page="general" class="selected"><span data-icon="settings"></span>일반</button><button type="button" data-settings-page="updates"><span data-icon="refresh"></span>자동 업데이트</button><button type="button" data-settings-page="interaction"><span data-icon="split"></span>탭·마우스</button><button type="button" data-settings-page="terminal"><span data-icon="terminal"></span>터미널</button><button type="button" data-settings-page="shortcuts"><span data-icon="sliders"></span>단축키</button><button type="button" data-settings-page="logging"><span data-icon="file"></span>로그 저장</button><button type="button" data-settings-page="shared"><span data-icon="server"></span>공유 세션</button><button type="button" data-settings-page="sessions"><span data-icon="import"></span>가져오기·내보내기</button></nav>
+      <div class="modal-body session-options-body">
+        <section data-settings-panel="general">
+          <h3>일반</h3>
+          <label>테마<select name="theme"><option value="dark">다크</option><option value="light">라이트</option></select></label>
+          <label>빠른 연결 기본 사용자<input name="quickUsername" maxlength="256" placeholder="비워 두면 연결할 때 입력"></label><p class="field-hint">주소 창 연결의 기본 계정이며 사용자@호스트 입력이 우선합니다.</p>
+          <button type="button" id="open-data-folder" class="secondary-button small"><span data-icon="folder"></span>데이터 폴더 열기</button>
+          <button type="button" id="create-desktop-shortcut" class="secondary-button small"><span data-icon="zap"></span>바탕화면 바로가기 생성</button>
+          
+          <div class="shortcut-list" id="shortcut-summary"></div>
+        </section>
+        <section data-settings-panel="updates" class="hidden">
+          <h3>자동 업데이트</h3>
+          <div class="update-source-row">
+            <span class="field-hint">업데이트 출처:</span>
+            <button type="button" id="update-open-website" class="secondary-button">공식 웹 바로 가기</button>
+            <span id="update-source" class="field-hint" dir="auto">(sessiondock.norahc.com)</span>
+          </div>
+          <label class="check-label"><input name="updateFromLocalFolder" id="update-local-folder" type="checkbox"> 로컬 폴더 사용</label>
+          <label>업데이트 폴더<div class="input-with-button"><input name="updateDirectory" id="update-directory" maxlength="4096" placeholder="업데이트 폴더 경로" disabled><button type="button" id="browse-update-directory" class="secondary-button" disabled>폴더 선택</button></div></label>
+          <label class="check-label"><input name="updateCheckOnStartup" type="checkbox"> 앱 시작 시 1회 확인</label>
+          <button type="button" id="update-check" class="secondary-button small">지금 확인</button>
+          <button type="button" id="update-install" class="secondary-button small" hidden>업데이트 후 다시 시작</button>
+          <p id="update-result" class="field-hint" role="status"></p>
+        </section>
+        <section data-settings-panel="shortcuts" class="hidden"><h3>단축키</h3><div id="shortcut-settings"></div></section>
+        <section data-settings-panel="interaction" class="hidden">
+          <h3>탭</h3>
+          <label class="check-label"><input name="middleClickClosesTab" type="checkbox" checked> 탭을 휠 버튼으로 클릭해 닫기</label>
+          <label class="check-label"><input name="confirmTabClose" type="checkbox" checked> 연결 중인 탭을 닫기 전에 확인</label>
+          <label class="check-label"><input name="focusNewTab" type="checkbox" checked> 새로 열린 탭으로 자동 전환</label>
+          <h3>마우스·클립보드</h3>
+          <label>터미널 우클릭 동작<select name="rightClickAction"><option value="menu">메뉴 열기</option><option value="paste">붙여넣기</option></select></label>
+          <p class="field-hint">붙여넣기 모드에서도 Shift+우클릭으로 메뉴를 엽니다.</p>
+          <label class="check-label"><input name="copyOnSelect" type="checkbox"> 터미널에서 선택한 내용을 자동 복사</label>
+          <label class="check-label"><input name="middleClickPaste" type="checkbox"> 터미널에서 휠 버튼으로 붙여넣기</label>
+          <label class="check-label"><input name="confirmMultilinePaste" type="checkbox" checked> 여러 줄 붙여넣기 전에 확인</label>
+          <h3>프로그램 종료</h3>
+          <label class="check-label"><input name="confirmAppExit" type="checkbox" checked> 연결이 남아 있으면 종료 전에 확인</label>
+        </section>
+        <section data-settings-panel="terminal" class="hidden">
+          <h3>글꼴과 간격</h3>
+          <label>글꼴<input name="fontFamily" list="terminal-font-families" maxlength="128" required autocomplete="off"></label>
+          <p class="field-hint system-font-status">설치된 글꼴을 불러옵니다. 고정폭 글꼴을 권장합니다.</p>
+          <div class="form-row"><label>글자 크기 (px)<input name="fontSize" type="number" min="10" max="48" value="14" required></label><label>글꼴 굵기<select name="fontWeight"><option value="normal">보통</option><option value="bold">굵게</option></select></label></div>
+          <div class="form-row"><label>줄 간격 (배율)<input name="lineHeight" type="number" min="1" max="2" step="0.05" value="1" required></label><label>글자 간격 (px)<input name="letterSpacing" type="number" min="0" max="5" step="0.1" value="0" required></label></div>
+          <button type="button" id="global-font-defaults" class="secondary-button small"><span data-icon="refresh"></span>기본 글꼴로 되돌리기</button>
+          <p class="field-hint">세션에서 따로 지정한 글꼴·크기·간격이 우선합니다.</p>
+          <label for="terminal-transparency">터미널 배경 투명도</label><div class="transparency-control"><input id="terminal-transparency" name="terminalTransparency" type="range" min="0" max="100" step="1" value="0" aria-describedby="terminal-transparency-hint"><output id="terminal-transparency-value" for="terminal-transparency">0%</output></div><p id="terminal-transparency-hint" class="field-hint">0%는 불투명입니다. 투명 모드 전환은 재시작 후, 농도는 바로 적용됩니다.</p><div class="terminal-preview-surface"><div id="terminal-color-preview" class="terminal-color-preview" aria-label="터미널 색상 미리보기"><div><span data-color="prompt">user@server</span>:<span data-color="path">~/logs</span>$ <span data-color="command">tail</span> <span data-color="option">-f</span> <span data-color="path">/var/log/app.log</span></div><div>한글 출력 · 0O 1Il [] {} → <strong>Bold</strong></div><div><span data-color="success">SUCCESS</span> <span data-color="address">192.168.1.10</span> · <span data-color="number">22</span> · <span data-color="warning">WARNING</span> · <span data-color="error">ERROR</span></div></div>
+          </div><h3>화면과 스크롤</h3>
+          <label>스크롤백 줄 수<input name="scrollback" type="number" min="1000" max="100000" step="1000" value="10000"></label>
+          <label class="check-label"><input name="scrollOnOutput" type="checkbox"> 새 출력이 오면 맨 아래로 이동</label>
+          <label class="check-label"><input name="scrollOnKeypress" type="checkbox" checked> 키 입력 시 맨 아래로 이동</label>
+          <label class="check-label"><input name="visualBell" type="checkbox"> 벨 신호를 받으면 화면 테두리로 알림</label>
+          
+          <label>색상 방식<select name="terminalColorScheme"><option value="wind">WindTerm · 구문별 색상</option><option value="securecrt">SecureCRT · ANSI와 키워드</option><option value="classic" hidden>SecureCRT · ANSI와 키워드</option></select></label>
+          <label class="check-label"><input name="semanticColoring" type="checkbox" checked> 내용 강조 사용</label><p id="terminal-color-mode-hint" class="field-hint">명령, 경로, IP, 숫자, 상태 단어를 색상으로 구분합니다.</p>
+          <label class="check-label"><input name="terminalLineNumbers" type="checkbox"> 줄 번호 표시 (기본값)</label><label class="check-label"><input name="terminalTimestamps" type="checkbox"> 시간 표시 (기본값)</label><p class="field-hint">터미널 우클릭으로 개별 변경합니다. 시간은 이 PC 기준이며 복사·로그에 포함되지 않습니다.</p>
+        </section>
+        <section data-settings-panel="logging" class="hidden">
+          <h3>로그 저장</h3>
+          <label class="check-label"><input name="logEnabled" type="checkbox"> 모든 연결의 로그 자동 저장</label><p class="field-hint">현재 및 새 연결을 자동 기록하며 탭 우클릭으로 개별 중지합니다.</p>
+          <label>저장 폴더<div class="input-with-button"><input name="logDirectory" id="log-directory" placeholder="기본 로그 폴더 사용"><button type="button" id="browse-log-directory" class="secondary-button">찾아보기</button></div></label>
+          <label>파일명 양식<div class="form-row"><select id="log-template-preset" aria-label="로그 파일명 양식 예시"><option value="">직접 설정</option><option value="{year}{month}{day}_{hour}{minute}{second}_{host}.log">기본 · 연월일_시각_호스트.log</option><option value="session-{session}-{date}-{time}-{id}.log">세션 · 날짜 · 고유 번호</option><option value="{host}_{date}_{time}.log">호스트 · 날짜 · 시간</option><option value="{date}/{session}_{time}.log">날짜 폴더 / 세션 · 시간</option></select><input name="logFilenameTemplate" required maxlength="512" aria-label="로그 파일명 양식"></div></label>
+          <p class="field-hint">{session} 세션 · {host} 호스트 · {username} 사용자 · {protocol} 프로토콜 · {port} 포트<br>{date} 날짜 · {time} 시각 · {year}/{month}/{day} 연/월/일 · {hour}/{minute}/{second} 시/분/초 · {id} 연결 번호<br>중복 파일은 번호를 붙여 보존합니다.</p>
+          <label class="check-label"><input name="logRotateDaily" type="checkbox"> 날짜가 바뀌면 새 로그 파일로 저장</label><div class="form-row"><label>저장 형식<select name="logFormat" id="log-format"><option value="text" selected>일반 텍스트 (UTF-8)</option><option value="raw">원본 출력</option></select></label><label class="check-label"><input name="logTimestamps" id="log-timestamps" type="checkbox"> 줄마다 날짜·시간 표시</label></div><p class="field-hint">원본은 받은 데이터를 그대로 저장합니다. 일반 텍스트는 색상·제어 코드를 제외하며 시각은 한국 시간 기준입니다.</p>
+          <div class="log-preview"><span>파일 경로 예시</span><output id="log-filename-preview"></output></div><p class="field-hint">폴더·파일명·형식 변경은 다음 연결이나 로그 재시작부터 적용됩니다.</p>
+          <button type="button" id="settings-open-logs" class="secondary-button small"><span data-icon="folder"></span>로그 폴더 열기</button>
+        </section>
+        <section data-settings-panel="shared" class="hidden shared-settings">
+          <h3>공유 목록 등록</h3>
+          <p class="field-hint">로컬 또는 네트워크 공유(UNC) 경로의 읽기 전용 세션 목록을 등록합니다.</p>
+          <label>목록 이름<input id="shared-source-name" maxlength="100" placeholder="예시 공유 세션 1"></label>
+          <label>공유 파일 경로<div class="input-with-button"><input id="shared-source-path" maxlength="4096" placeholder="예: \\fileserver.example.com\sessions\shared-sessions.json"><button type="button" class="secondary-button shared-operation" id="shared-browse">찾아보기</button></div></label>
+          <button type="button" class="secondary-button shared-operation" id="shared-add">공유 목록 등록</button>
+          <div id="shared-source-list" class="shared-source-list"></div>
+          <p id="shared-result" class="field-hint" role="status"></p>
+        </section>
+        <section data-settings-panel="sessions" class="hidden session-data-actions">
+          <h3>세션 가져오기</h3>
+          
+          <button type="button" id="import-securecrt" class="import-option"><span data-icon="folder"></span><div><strong>SecureCRT 폴더 가져오기</strong><p>Config 또는 Sessions 폴더에서 세션을 불러옵니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <button type="button" id="import-windterm" class="import-option"><span data-icon="import"></span><div><strong>WindTerm 파일 가져오기</strong><p>WindTerm 프로필의 세션 파일을 불러옵니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <button type="button" id="import-putty" class="import-option"><span data-icon="server"></span><div><strong>PuTTY 레지스트리 가져오기 (이 PC)</strong><p>이 PC 레지스트리에 저장된 PuTTY 세션을 바로 불러옵니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <button type="button" id="import-putty-file" class="import-option"><span data-icon="file"></span><div><strong>PuTTY 파일 가져오기 (.reg)</strong><p>레지스트리에서 내보낸 PuTTY .reg 파일을 불러옵니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <button type="button" id="import-file" class="import-option"><span data-icon="file"></span><div><strong>SessionDock·SecureCRT 파일 가져오기</strong><p>SessionDock(JSON)·SecureCRT(XML)에서 내보낸 파일을 불러옵니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <h3>CSV 양식</h3>
+          <button type="button" id="save-sample-csv" class="secondary-button">예시 CSV 저장...</button>
+          <label>폴더 열 수 <select id="csv-folder-count"><option value="auto" selected>자동</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option></select></label>
+          <label class="check-label" for="csv-header"><input type="checkbox" id="csv-header" checked>첫 행은 제목 (수동)</label>
+          <label class="check-label" for="csv-has-id"><input type="checkbox" id="csv-has-id">첫 열은 ID (수동)</label>
+          <button type="button" id="import-csv" class="secondary-button">CSV 가져오기 · 미리보기...</button>
+          <p class="field-hint">자동: 헤더를 우선 인식하며 헤더가 없으면 앞 열은 폴더, 마지막 4열은 이름·주소·프로토콜·포트입니다.</p>
+          <div id="csv-preview" class="hidden">
+            <p id="csv-preview-summary"></p>
+            <div class="csv-preview-scroll" tabindex="0" role="region" aria-label="CSV 세션 미리보기"><table><thead><tr><th>폴더</th><th>이름</th><th>주소</th><th>프로토콜</th><th>포트</th></tr></thead><tbody id="csv-preview-rows"></tbody></table></div>
+            <div class="csv-preview-actions"><button type="button" id="csv-apply" class="primary-button">확인 후 추가</button><button type="button" id="csv-cancel" class="secondary-button">미리보기 취소</button></div>
+          </div>
+          <p class="field-hint" id="csv-result" role="status"></p>
+          <h3>세션 내보내기</h3>
+          <button type="button" id="export-sessions" class="import-option"><span data-icon="export"></span><div><strong>SessionDock JSON으로 내보내기</strong><p>세션, 폴더, 버튼 바를 파일로 저장합니다.</p></div><span class="import-chevron" aria-hidden="true" data-icon="folderChevron"></span></button>
+          <p class="field-hint" id="session-data-result" role="status"></p>
+        </section>
+        <div id="settings-form-error" class="form-error" role="alert" tabindex="-1"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><span id="settings-footer-note" class="footer-note" role="status"></span><button type="button" id="settings-cancel" class="secondary-button modal-close">취소</button><button class="primary-button" id="settings-apply" type="submit">적용</button></div>
+  </form></dialog>
+  <dialog id="snippet-dialog" class="modal compact-modal"><form id="snippet-form"><div class="modal-header"><div><span class="eyebrow">버튼 바</span><h2>버튼 바 명령 저장</h2></div><button type="button" class="icon-button modal-close" aria-label="닫기"><span data-icon="close"></span></button></div><div class="modal-body"><label>이름<input name="name" required maxlength="100" placeholder="예시 명령 1"></label><label>폴더<input name="folder" maxlength="1024" placeholder="예시 명령 폴더 1"></label><label>전송 대상<select name="target"><option value="active">현재 세션</option><option value="selected">선택한 탭 그룹</option><option value="all">연결된 모든 세션</option></select></label><label>명령어<textarea name="command" required rows="4" maxlength="16000" placeholder="df -h"></textarea></label><p class="field-hint">명령어를 실행하기 전에 대상과 내용을 확인합니다.</p></div><div class="modal-footer"><button type="button" class="secondary-button modal-close">취소</button><button class="primary-button" type="submit">저장</button></div></form></dialog>
+  <dialog id="message-dialog" class="modal compact-modal"><div class="modal-header"><h2 id="message-title">안내</h2></div><div class="modal-body" id="message-body"></div><div class="modal-footer"><button id="message-cancel" class="secondary-button hidden">취소</button><button id="message-ok" class="primary-button">확인</button></div></dialog>
+  <div id="context-menu" class="context-menu hidden" role="menu" aria-label="세션 작업"></div>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <div id="startup-toasts" class="toasts startup-toasts" role="status" aria-live="polite"></div>
+  <datalist id="terminal-font-families"></datalist>
+  <script src="bundle.js"></script>
+</body>
+</html>

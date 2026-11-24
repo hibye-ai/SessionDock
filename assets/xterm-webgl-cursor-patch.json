@@ -1,0 +1,24 @@
+{
+  "dependency": "@xterm/addon-webgl",
+  "version": "0.19.0",
+  "coreDiffAuthor": "9router/deepseek-v4.1-flash-free",
+  "reviewAndIntegration": "Codex",
+  "reason": "Register the cursor MutableDisposable with renderer lifetime so interval, timeout and animation-frame callbacks are disposed with their renderer.",
+  "files": [
+    {
+      "file": "node_modules/@xterm/addon-webgl/lib/addon-webgl.js",
+      "upstreamSha256": "b85f8d4b3e9756bebb757e3fe47134d70f03ea3d6b187624426d2e2b65dec06c",
+      "patchedSha256": "311a2455801b8815ad4e283e74bbc84f25e9291e7042f5f6825e41cc02fde898"
+    },
+    {
+      "file": "node_modules/@xterm/addon-webgl/lib/addon-webgl.mjs",
+      "upstreamSha256": "5ac2cbbb8a861ba99176eda0ee91f10c08de32d091e3488edf699ad111131ebb",
+      "patchedSha256": "162e142831fd4f68ce15eff1222d0f333bc4e569eb09699123b2e3a0a32fa471"
+    },
+    {
+      "file": "node_modules/@xterm/addon-webgl/src/WebglRenderer.ts",
+      "upstreamSha256": "6539558711f60c82c25388aab042f7677e013487b5106c50d51aef5dfc9f2e9c",
+      "patchedSha256": "6346fbfbb7cfcfa61d614d598b126ee79d7a38c40cced5f8883e8fa43c71422d"
+    }
+  ]
+}
