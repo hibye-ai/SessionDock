@@ -7,11 +7,6 @@
 <h1>Windows용 SSH2·Telnet 터미널</h1>
 
 <p>
-  네트워크 장비와 서버 세션을 폴더와 검색으로 정리하고,<br>
-  다중 탭과 분할 화면으로 여러 장비를 빠르게 제어하는 Windows 전용 터미널입니다.
-</p>
-
-<p>
   <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="docs/cta-download-dark.svg">
@@ -22,17 +17,13 @@
 </p>
 
 <p>
-  <sub>Windows x64 · 무설치 포터블 · <code>SessionDock.zip</code></sub>
-</p>
-
-<p>
   <a href="https://sessiondock.norahc.com/">공식 사이트</a>
   &nbsp;·&nbsp;
   <a href="#주요-기능">주요 기능</a>
   &nbsp;·&nbsp;
   <a href="#windows에서-설치와-실행">설치와 실행</a>
   &nbsp;·&nbsp;
-  <a href="#변경-사항">변경 사항</a>
+  <a href="https://github.com/hibye-ai/SessionDock/releases">변경 사항</a>
   &nbsp;·&nbsp;
   <a href="#개발과-빌드">개발과 빌드</a>
 </p>
@@ -42,10 +33,6 @@
 <a href="https://sessiondock.norahc.com/sessiondock-demo-v54.png">
   <img src="https://sessiondock.norahc.com/sessiondock-terminal-v54.gif" alt="SessionDock에서 Cisco 스위치와 라우터 탭을 전환하며 인터페이스, EtherChannel, OSPF, BGP 상태를 확인하는 화면" width="100%">
 </a>
-
-<p>
-  <sub>이미지를 클릭하면 전체 화면 스크린샷(1920×1080)을 볼 수 있습니다.</sub>
-</p>
 
 </div>
 
@@ -65,7 +52,7 @@
     </tr>
     <tr>
       <td valign="top"><code>03</code>&nbsp;&nbsp;<strong>구문 강조 출력</strong></td>
-      <td valign="top">스위치·라우터의 인터페이스 상태, IP 주소, 연결 여부를 색상으로 자동 강조해 대량 출력에서도 이상 징후를 한눈에 파악합니다.</td>
+      <td valign="top">스위치·라우터의 인터페이스 상태, IP 주소, 연결 여부를 색상으로 강조합니다.</td>
     </tr>
     <tr>
       <td valign="top"><code>04</code>&nbsp;&nbsp;<strong>명령 입력 바 · 동시 전송</strong></td>
@@ -84,7 +71,7 @@
   <tbody>
     <tr>
       <td width="34%" valign="top"><strong>압축 해제 후 실행</strong></td>
-      <td valign="top">Windows x64용 <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8"><code>SessionDock.zip</code></a>을 내려받아 새 폴더에 압축을 풀고 <code>SessionDock.exe</code>를 실행하세요. 별도 설치가 필요 없는 포터블 방식입니다.</td>
+      <td valign="top">Windows x64용 <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8"><code>SessionDock.zip</code></a>을 새 폴더에 압축 해제하고 <code>SessionDock.exe</code>를 실행하세요.</td>
     </tr>
     <tr>
       <td valign="top"><strong>무결성 검사 (SHA-256)</strong></td>
@@ -93,26 +80,6 @@
     <tr>
       <td valign="top"><strong>업데이트 채널</strong></td>
       <td valign="top">이 버전의 기본 업데이트 채널은 공식 SessionDock 서버이며, 설정에서 로컬 폴더 업데이트를 선택할 수 있습니다.</td>
-    </tr>
-  </tbody>
-</table>
-
-## 변경 사항
-
-<table>
-  <tbody>
-    <tr>
-      <td width="34%" valign="top"><strong><code>0.1.8</code></strong>&nbsp;&nbsp;<code>최신</code></td>
-      <td valign="top">
-        • 공식 웹 업데이트와 공유 세션 게시를 추가했습니다.
-      </td>
-    </tr>
-    <tr>
-      <td valign="top"><strong><code>0.1.7</code></strong></td>
-      <td valign="top">
-        • SSH 접속 시 네트워크 연결 가능 여부를 먼저 확인한 뒤 로그인 창을 표시하도록 개선했습니다.<br>
-        • 전반적인 인터페이스와 사용성을 다듬었습니다.
-      </td>
     </tr>
   </tbody>
 </table>
@@ -142,14 +109,3 @@ Windows 빌드 결과는 `dist/SessionDock.zip`에 생성됩니다. 단위 시�
 ## 라이선스
 
 SessionDock 소스는 MIT 라이선스로 제공됩니다. 자세한 내용은 [LICENSE](LICENSE)를 참고하세요.
-
----
-
-<div align="center">
-  <code>&gt;_</code>&nbsp;&nbsp;<strong>SessionDock</strong><br>
-  <sub>
-    <a href="https://sessiondock.norahc.com/">공식 사이트</a> ·
-    <a href="https://github.com/hibye-ai/SessionDock/releases/tag/v0.1.8">Windows 다운로드</a> ·
-    <a href="LICENSE">MIT License</a>
-  </sub>
-</div>

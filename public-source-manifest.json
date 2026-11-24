@@ -21,7 +21,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "da9555566fbe55654f4dd2d4480e42514b659027e5338c7310eafb087c5134db"
+      "sha256": "6db374c881daaec642bd2ff9447f0a7b0fe0289f62b8e09c4c09d3d5da0c55eb"
     },
     {
       "path": "assets/automation/python_bridge.py",
@@ -97,7 +97,7 @@
     },
     {
       "path": "docs/readme-hero.png",
-      "sha256": "6d104c0c3df51c02d63fd682716e27d759c2601d82b469ed79176d64a42a5fe7"
+      "sha256": "eaed38a6186f3b8d1f61b4eddb813621193c16e0bcd80449068120c7e545fa9e"
     },
     {
       "path": "package-lock.json",
